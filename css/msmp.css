@@ -1,0 +1,190 @@
+/* ===== MSMP Simulator page: site shell (matches other pages) ===== */
+:root{
+  --bg:#0B1E33; --paper:#F4F7FB; --ink:#0B1E33; --ink-soft:#4A5C72; --line:#DCE4EE; --blue:#1E6FD9;
+  --shadow:0 1px 2px rgba(11,30,51,.06),0 8px 20px -12px rgba(11,30,51,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1200px 500px at 10% -10%,#123159 0%,transparent 60%),var(--bg);
+  font-family:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  color:var(--ink);padding:32px 16px 96px;-webkit-text-size-adjust:100%;
+}
+.sheet{max-width:1400px;margin:0 auto}
+.masthead{
+  background:linear-gradient(135deg,#0F2540 0%,#143A66 55%,#1E6FD9 130%);
+  border-radius:18px;padding:26px 32px;display:flex;align-items:center;justify-content:space-between;
+  gap:24px;box-shadow:var(--shadow);margin-bottom:18px;
+}
+.masthead .title-block h1{margin:0 0 6px;color:#fff;font-family:'Space Grotesk','IBM Plex Sans',sans-serif;font-size:clamp(22px,3vw,34px);letter-spacing:.3px}
+.masthead .eyebrow{display:inline-block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9FC4FF;font-weight:700;margin-bottom:6px}
+.nav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-links a{color:#EAF2FF;text-decoration:none;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:999px;white-space:nowrap;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);transition:background .15s,border-color .15s}
+.nav-links a:hover{background:rgba(255,255,255,.18)}
+.nav-links a.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.site-foot{text-align:center;color:#8FB0DA;font-size:12px;margin-top:22px;letter-spacing:.3px}
+
+/* ===== Simulator (everything scoped under .sim) ===== */
+.sim{background:#fff;color:#32363a;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;font-size:13px;font-family:"72","Segoe UI",Arial,Helvetica,sans-serif}
+.sim *{box-sizing:border-box}
+.sim .hdr{background:#a9c4e3;min-height:46px;display:flex;align-items:center;justify-content:space-between;padding:8px 16px;gap:12px;flex-wrap:wrap}
+.sim .hdr .brand{font-weight:700;color:#1d3f6e;font-size:13px;min-width:200px}
+.sim .hdr .brand b{background:#1d5fa8;color:#fff;border-radius:3px;padding:2px 7px;margin-right:6px;font-size:12px}
+.sim .hdr .title{color:#2c4a73;font-size:14px;text-align:center;flex:1;min-width:260px}
+.sim .hdr .tools{display:flex;gap:8px;align-items:center;font-size:12px;color:#1d3f6e;flex-wrap:wrap;justify-content:flex-end}
+.sim .hdr .tools label{display:inline-flex;align-items:center;gap:5px}
+.sim .hdr .tools button,.sim .hdr .tools a.lnk{background:#e9f1fa;border:1px solid #6a8fb8;color:#1d3f6e;border-radius:4px;padding:3px 9px;height:28px;cursor:pointer;font:inherit;text-decoration:none;display:inline-flex;align-items:center}
+.sim .hdr .tools button:hover,.sim .hdr .tools a.lnk:hover{background:#fff}
+
+.sim .wiz{display:flex;padding:18px 24px 6px;background:#fff;border-bottom:1px solid #d9d9d9;overflow-x:auto;gap:0;-webkit-overflow-scrolling:touch}
+.sim .ws{flex:1;min-width:110px;position:relative;text-align:center;cursor:pointer;padding-bottom:10px}
+.sim .ws::before,.sim .ws::after{content:"";position:absolute;top:15px;height:1px;background:#89919a}
+.sim .ws::before{left:0;right:50%}.sim .ws::after{left:50%;right:0}
+.sim .ws:first-child::before{left:20%}.sim .ws:last-child::after{right:20%}
+.sim .ws .c{position:relative;z-index:1;margin:0 auto;width:30px;height:30px;border-radius:50%;border:1px solid #89919a;background:#fff;line-height:28px;font-size:13px;color:#32363a}
+.sim .ws.act .c{background:#355c8a;border-color:#355c8a;color:#fff}
+.sim .ws.done .c{border-color:#2b7d2b;color:#2b7d2b}
+.sim .ws .l{display:block;margin-top:8px;font-size:12px;color:#32363a}
+.sim .ws.act .l{font-weight:700;color:#1d3f6e}
+
+.sim .main{padding:10px 24px 24px}
+.sim .procrow{display:flex;align-items:center;gap:8px;margin:6px 0 10px}
+.sim .procrow input{width:360px;background:#f2f2f2}
+.sim .sec{margin:12px 0}
+.sim .sec-h{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d9d9d9;padding:6px 2px;font-size:15px;color:#32363a}
+.sim .sec-h .min{cursor:pointer;color:#555;font-weight:700;padding:0 8px;user-select:none}
+.sim .sec-b{padding:10px 2px}
+
+.sim .btn{font:inherit;background:#fff;border:1px solid #89919a;border-radius:4px;padding:2px 10px;height:28px;cursor:pointer;color:#0a6ed1;margin-right:6px}
+.sim .btn:hover{background:#eef4fb}
+.sim .btn.em{background:#0a6ed1;color:#fff;border-color:#0a6ed1}
+.sim .btn.em:hover{background:#085caf}
+.sim .btn.neg{color:#bb0000}
+.sim .btn[disabled]{opacity:.45;cursor:not-allowed}
+.sim .toolbar{margin:4px 0 8px}
+.sim input,.sim select,.sim textarea{font:inherit;border:1px solid #89919a;border-radius:4px;padding:3px 6px;height:28px;background:#fff;color:#32363a;max-width:100%}
+.sim textarea{height:auto;width:100%;padding:6px}
+.sim input:focus,.sim select:focus,.sim textarea:focus,.sim .btn:focus-visible{outline:2px solid #0a6ed1;outline-offset:-1px}
+.sim input[type=radio],.sim input[type=checkbox]{height:auto}
+
+.sim .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sim table.tbl{border-collapse:collapse;width:100%;min-width:640px}
+.sim .tbl th{background:#f7f7f7;text-align:left;font-weight:600;font-size:12px;padding:7px 8px;border-bottom:1px solid #d9d9d9;border-top:1px solid #d9d9d9;white-space:nowrap}
+.sim .tbl td{padding:5px 8px;border-bottom:1px solid #e5e5e5;vertical-align:middle}
+.sim .tbl tr.sel td{background:#e8f1fb}
+.sim .tbl tr:hover td{background:#f5f9fd}
+.sim .tbl tr.sel:hover td{background:#e8f1fb}
+.sim .tbl.mw480{min-width:480px}.sim .tbl.mw520{min-width:520px}.sim .tbl.mw560{min-width:560px}.sim .tbl.mw600{min-width:600px}.sim .tbl.mw1000{min-width:1000px}
+.sim .w60{width:60px}.sim .w90{width:90px}.sim .w140{width:140px}.sim .w180{width:180px}.sim .w240{width:240px}.sim .w360{width:360px}
+.sim input[readonly]{background:#f2f2f2}
+.sim .mt6{margin-top:6px}.sim .mt8{margin-top:8px}.sim .mt10{margin-top:10px}
+
+.sim .grid{display:grid;grid-template-columns:200px 360px 200px 360px;gap:10px 14px;align-items:center}
+.sim .grid.g-default{grid-template-columns:200px 300px}
+.sim .grid.g-sim{grid-template-columns:150px 200px 150px 200px}
+.sim .grid label{text-align:right;color:#515559}
+.sim .chk{display:flex;gap:18px;flex-wrap:wrap}
+.sim .chk label{display:flex;gap:6px;align-items:center}
+
+.sim details.info{border:1px solid #c7d8ec;border-left:4px solid #0a6ed1;background:#f5f9ff;border-radius:4px;margin:8px 0 14px}
+.sim details.info summary{cursor:pointer;padding:10px 12px;font-weight:600;color:#1d3f6e}
+.sim details.info .ib{padding:2px 16px 12px;line-height:1.55}
+.sim details.info h4{margin:12px 0 3px;color:#1d3f6e;font-size:13px}
+.sim details.info p,.sim details.info ol,.sim details.info ul{margin:2px 0}
+.sim details.info ol,.sim details.info ul{padding-left:20px}
+.sim details.info a{color:#0a6ed1;word-break:break-word}
+.sim details.lk{border-left-color:#2b7d2b;background:#f4fbf6;border-color:#bfe2c8}
+.sim details.lk summary{color:#1f5c2b}
+.sim details.lk li{margin:6px 0}
+.sim details.lk small{color:#666}
+.sim .rec{background:#e5f5e5;color:#2b7d2b;border:1px solid #9ad39a;border-radius:10px;font-size:11px;padding:0 7px;margin-left:4px}
+.sim.hidelearn details.info{display:none}
+.sim.hidelearn details.info.lk{display:block}
+.sim .tip{background:#fff8e1;border-left:4px solid #e9730c;padding:6px 10px;margin:8px 0;border-radius:3px;font-size:12px}
+.sim .chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.sim .chip{border:1px solid #89919a;border-radius:12px;padding:3px 9px;font-size:12px;cursor:pointer;background:#fff;font-family:Consolas,monospace}
+.sim .chip:hover{background:#eef4fb}
+.sim .prev{border:1px dashed #89919a;border-radius:4px;padding:10px;background:#fafafa;white-space:pre-wrap;min-height:60px;overflow-wrap:anywhere}
+.sim .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.sim .msg{display:flex;gap:8px;padding:6px 10px;border-radius:4px;margin:4px 0;font-size:12.5px}
+.sim .msg.S{background:#f1fdf6;border:1px solid #b5e5c5}
+.sim .msg.E{background:#fff4f4;border:1px solid #f1b3b3}
+.sim .msg.W{background:#fffaf0;border:1px solid #f3d29a}
+.sim .badge{padding:1px 8px;border-radius:10px;font-size:11.5px}
+.sim .badge.act{background:#e5f5e5;color:#2b7d2b;border:1px solid #9ad39a}
+.sim .badge.in{background:#f2f2f2;color:#666;border:1px solid #ccc}
+.sim .stage{border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:6px 0;background:#fff}
+.sim .stage.cur{border-color:#0a6ed1;box-shadow:0 0 0 2px #cfe3f8}
+.sim .stage.ok{background:#f1fdf6;border-color:#9ad39a}
+.sim .stage.no{background:#fff4f4;border-color:#f1b3b3}
+.sim .stage small{color:#666}
+.sim .mail{border-left:3px solid #6a8fb8;background:#f7fafd;padding:6px 10px;margin:5px 0;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.sim .trace li{margin:2px 0}
+.sim .rg{border:1px solid #c7d8ec;border-left:4px solid #0a6ed1;background:#f5f9ff;border-radius:4px;padding:8px 12px;margin:10px 0;line-height:1.5}
+.sim .rg p{margin:3px 0}
+.sim .rgh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#1d3f6e;font-size:14px}
+.sim .rgh .rec{margin-left:0}
+
+/* fixed Back / Next bar and toast sit outside the card flow */
+.foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #cfd6dd;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px;z-index:20;font-size:13px;font-family:"72","Segoe UI",Arial,sans-serif;box-shadow:0 -4px 14px -8px rgba(11,30,51,.35)}
+.foot .note{font-size:11.5px;color:#6a6d70}
+.foot .note a{color:#0a6ed1}
+.foot .btn{font:inherit;background:#fff;border:1px solid #89919a;border-radius:4px;padding:2px 14px;height:32px;cursor:pointer;color:#0a6ed1;margin-left:6px}
+.foot .btn.em{background:#0a6ed1;color:#fff;border-color:#0a6ed1}
+.foot .btn[disabled]{opacity:.45;cursor:not-allowed}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:#354a5f;color:#fff;padding:9px 18px;border-radius:6px;font-size:13px;z-index:30;display:none;max-width:90vw}
+.toast.E{background:#bb0000}.toast.S{background:#2b7d2b}
+
+@media(max-width:900px){
+  .sim .two{grid-template-columns:1fr}
+  .sim .grid,.sim .grid.g-default,.sim .grid.g-sim{grid-template-columns:1fr}
+  .sim .grid label{text-align:left}
+}
+
+/* ===== phones ===== */
+@media(max-width:700px){
+  body{padding:12px 10px 92px}
+  .masthead{flex-direction:column;align-items:flex-start}
+  .sim{border-radius:12px;font-size:14px}
+  .sim .hdr{padding:8px 12px;gap:6px}
+  .sim .hdr .brand{display:none}
+  .masthead{padding:14px}
+  .masthead .eyebrow{font-size:10px;letter-spacing:1.5px}
+  .sim .hdr .title{flex-basis:100%;order:3;min-width:0;text-align:left;font-size:12.5px}
+  .sim .hdr .tools{width:100%;justify-content:flex-start}
+  .sim .hdr .tools button,.sim .hdr .tools a.lnk{height:36px}
+  .sim .wiz{padding:12px 6px 2px}
+  .sim .ws{min-width:66px}
+  .sim .ws .l{font-size:10.5px}
+  .sim .main{padding:8px 12px 20px}
+  .sim .procrow{flex-wrap:wrap}.sim .procrow input{width:100%}
+  .sim input,.sim select,.sim textarea{font-size:16px}
+  .sim input:not([type=checkbox]):not([type=radio]),.sim select{height:40px}
+  .sim input[type=checkbox],.sim input[type=radio]{width:22px;height:22px}
+  .sim .btn{height:38px;padding:2px 12px;margin-bottom:4px}
+  .sim .grid input:not([type=checkbox]),.sim .grid select{width:100%}
+  .sim .w60,.sim .w90,.sim .w140,.sim .w180,.sim .w240,.sim .w360{width:100%}
+  .sim .chk{gap:10px 16px}
+  .sim .sec-h{font-size:14px}
+  .sim .sec-h .min{padding:6px 12px}
+  .sim details.info .ib{padding:2px 12px 12px}
+  .sim details.lk li{padding:4px 0}
+  .sim .chip{padding:6px 11px}
+  /* tables become cards (data-label is added by js) */
+  .sim .tbl,.sim .tbl.mw480,.sim .tbl.mw520,.sim .tbl.mw560,.sim .tbl.mw600,.sim .tbl.mw1000{min-width:0}
+  .sim .tbl thead{display:none}
+  .sim .tbl,.sim .tbl tbody,.sim .tbl tr{display:block;width:100%}
+  .sim .tbl tr{border:1px solid #d9d9d9;border-radius:6px;margin:0 0 10px;padding:4px 10px;background:#fff}
+  .sim .tbl tr.sel{border-color:#0a6ed1;box-shadow:0 0 0 2px #cfe3f8}
+  .sim .tbl td{display:flex;align-items:center;justify-content:space-between;gap:10px;border:0;padding:5px 0;background:transparent!important}
+  .sim .tbl td::before{content:attr(data-label);flex:0 0 36%;font-size:11.5px;font-weight:600;color:#6a6d70}
+  .sim .tbl td>input:not([type=checkbox]):not([type=radio]),.sim .tbl td>select{flex:1;width:auto;min-width:0}
+  .sim .tbl td>input[type=checkbox],.sim .tbl td>input[type=radio]{margin-left:auto}
+  .sim .tbl td>.btn{margin-left:auto}
+  .sim .tbl td>code{overflow-wrap:anywhere}
+  .foot{padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px))}
+  .foot .note{display:none}
+  .foot>div:last-child{display:flex;gap:8px;width:100%}
+  .foot .btn{flex:1;margin:0;height:42px}
+  .toast{bottom:72px}
+}

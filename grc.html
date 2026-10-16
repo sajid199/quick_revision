@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP GRC (AC) Cheat Sheet</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0B1E33">
+<link rel="stylesheet" href="css/grc.css">
+<link rel="stylesheet" href="css/nav-mobile.css">
+</head>
+<body>
+<div class="sheet">
+
+  <!-- Header -->
+  <div class="masthead">
+    <div class="title-block">
+      <span class="eyebrow">Reference Sheet · SAP GRC Access Control</span>
+      <h1>SAP GRC (AC) Cheat Sheet</h1>
+    </div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="ecc.html">ECC Security</a>
+      <a href="grc.html" class="active">GRC (AC)</a>
+      <a href="brfplus.html">BRF+ Cheat Sheet</a>
+      <a href="msmp.html">MSMP Simulator</a>
+      <a href="fiori.html">Fiori Security</a>
+      <a href="uar.html">UAR Review</a>
+    </nav>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- NEW: Post-Installation, Connector Config, Sync Jobs, Ruleset -->
+  <!-- ============================================================ -->
+  <div class="section-title">Implementation &amp; Post-Installation Setup</div>
+
+  <div class="row2">
+    <div class="panel">
+      <h2>Post-Installation Steps</h2>
+      <ol class="flow">
+        <li><b>Check required software components.</b>
+          <ul class="sub-list">
+            <li><b>GRC system:</b> <code class="tbl">GRCFND_A</code>, <code class="tbl">GRCPINW</code></li>
+            <li><b>Plug-in system:</b> <code class="tbl">GRCPINW</code> (Non-HR) / <code class="tbl">GRCPIERP</code> (HR)</li>
+          </ul>
+        </li>
+        <li><b>Check BC Sets</b> related to <code class="tbl">*GRAC*</code> and <code class="tbl">*MSMP*</code> are activated. A BC Set is an SAP-predefined default/standard values container. T-code: <code class="tbl">SCPR20</code>, Table: <code class="tbl">SCPRACTST</code> (SCPR*).
+          <ul class="sub-list">
+            <li><code class="tbl">GRAC*REQUEST*</code> → related to ARM</li>
+            <li><code class="tbl">GRAC*ROLE_MGMT*</code> → related to BRM</li>
+            <li><code class="tbl">GRAC*RA_RULESET*</code> → related to ARA</li>
+            <li><code class="tbl">GRAC*SPM*</code> → related to EAM</li>
+            <li><code class="tbl">GRC*MSMP*</code> → related to ARM</li>
+          </ul>
+        </li>
+        <li><b>Check services</b> related to <code class="tbl">*GRAC*</code> and <code class="tbl">*NWBC*</code> are activated &mdash; T-code <code class="tbl">SICF</code>.</li>
+        <li><code class="tbl">SPRO</code> → GRC → General Settings → Activate applications in client &mdash; ensure <b>GRC-AC is Active</b>.</li>
+        <li><code class="tbl">SPRO</code> → GRC → General Settings → Workflow → Perform Automatic Workflow Customizing (<code class="tbl">SWU3</code>) &mdash; everything should show <b>green</b>; otherwise escalate to Basis.</li>
+        <li><code class="tbl">SPRO</code> → GRC → General Settings → Workflow → Perform Task-Specific Customizing &mdash; every task must be defined as <b>Background</b> or <b>General</b> Task; if left empty, define it as General Task.</li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2>Connector Configuration</h2>
+      <p><b>Prerequisite:</b> an RFC user ID is needed in the plug-in system (S/4HANA/ECC), of type SYSTEM or COMMUNICATION, assigned the necessary RFC authorizations &mdash; objects starting with <code class="tbl">S_RFC*</code> grant RFC-related access.</p>
+      <p><b>Path for the first 3 steps:</b> SPRO → GRC → Common Component Settings → Integration Framework</p>
+      <ol class="flow">
+        <li><b>Create Connector</b> (<code class="tbl">SM59</code>) &mdash; sets up RFC between the plug-in and GRC systems.</li>
+        <li><b>Maintain Connectors and Connection Types</b>
+          <ul class="sub-list">
+            <li>Define Connectors: source connector &amp; logical port should match the target connector.</li>
+            <li>Define Subsequent Connector &mdash; only required for JAVA systems, not ABAP; created by the Basis team.</li>
+            <li>Define Connector Groups and create a group, then assign the connector to that group.</li>
+          </ul>
+        </li>
+        <li><b>Maintain Connection Settings</b> &mdash; Access Control integration scenarios: <code class="tbl">AUTH</code> (BRM, ARA), <code class="tbl">PROV</code> (ARM), <code class="tbl">ROLMG</code> (BRM), <code class="tbl">SUPMG</code> (EAM). Path: SPRO → GRC → Access Control.</li>
+        <li><b>Maintain Configuration Settings</b> &mdash; SPRO → GRC → AC → Maintain Configuration Settings; adjust parameters that control Access Control functionality per compliance/security policy.</li>
+        <li><b>Maintain Connector Settings</b> &mdash; SPRO → GRC → AC → Maintain Connector Settings; define Application Type, Environment, and PSS (Password Self Service).</li>
+        <li><b>Maintain Mapping for Actions and Connector Groups</b> (same path as step 4)
+          <ul class="sub-list">
+            <li>Maintain Connector Group Status &mdash; enter the connector group name and activate it.</li>
+            <li>Assign a default connector to the connector group &mdash; only one default connector per group per action; all systems in the group should be mapped to all actions.</li>
+          </ul>
+        </li>
+        <li><b>Maintain Plug-In Settings</b> (plug-in system only) &mdash; SPRO → IMG → GRC Plug-In → Maintain Plug-In Configuration Settings.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="panel">
+      <h2>Synchronization Jobs</h2>
+      <p><b>Path:</b> SPRO → IMG → GRC → Access Control → Synchronization Jobs</p>
+      <ul class="kv-list">
+        <li><b>Authorization Sync:</b> syncs backend system SU24 data into the GRC system.</li>
+        <li><b>Repository Object Sync:</b> syncs roles, users &amp; profiles.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>MSMP Workflow Overview</h2>
+      <p>User provisioning uses an approval workflow to automate the process. The engine driving it is <b>MSMP &mdash; Multi-Stage Multi-Path</b>. The Initiator determines the path a request takes; a single request can split across multiple paths.</p>
+      <dl class="glossary">
+        <dt>Initiator</dt><dd>Decides which path the request will follow.</dd>
+        <dt>Rules</dt><dd>Criteria evaluated for path decisions.</dd>
+        <dt>Path</dt><dd>A linear group of stages that determine which approvals are required.</dd>
+        <dt>Stage</dt><dd>A defined approval action required within a path.</dd>
+      </dl>
+      <div class="subhead">Paths can be split by</div>
+      <ul class="kv-list">
+        <li>System: Development vs. Production</li>
+        <li>Role selection: Display vs. Update</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="panel">
+      <h2>Rule Set</h2>
+      <p><b>Definition:</b> rule sets are collections of rules that identify potential SoD conflicts &mdash; each rule defines a combination of actions/transactions that could lead to unauthorized activity or financial misrepresentation if held by a single user.</p>
+      <p><b>Purpose:</b> rule sets help maintain internal controls and protect sensitive data, acting as the baseline for risk analysis and remediation.</p>
+
+      <div class="subhead">Rule Set Types</div>
+      <ul class="kv-list">
+        <li><b>Global Rule Set:</b> SAP-delivered, industry-standard rule set that offers a solid baseline &mdash; a good starting point.</li>
+        <li><b>Custom Rule Set:</b> built from scratch to address an organization's specific risks and requirements.</li>
+      </ul>
+
+      <div class="subhead">Setup Options</div>
+      <ol class="flow">
+        <li><b>Use the SAP-delivered Global Ruleset.</b> Path: GRC → Access Control → Access Risk Analysis → SOD Rules → Generate SOD Rules.</li>
+        <li><b>Copy the delivered ruleset to create a custom ruleset</b> and customize it.
+          <ul class="sub-list">
+            <li>Path: GRC → Access Control → Access Risk Analysis → SOD Rules → Download Rule Set.</li>
+            <li>Select the Risk IDs applicable to your organization based on the business process involved.</li>
+            <li>Prefix selected Risk IDs and Functions with <code class="tbl">Z</code>; customize functions as needed.</li>
+            <li>Upload the file for the new custom ruleset and generate the rule set.</li>
+          </ul>
+        </li>
+        <li><b>Build a custom rule set from scratch.</b> Path: NWBC → Set Up → Access Rule Maintenance.
+          <ul class="sub-list">
+            <li>Rule Sets → Create → enter name &amp; description → Save.</li>
+            <li>Functions → Create → enter Function ID, business process, description → add actions &amp; permissions (transactions &amp; authorizations).</li>
+            <li>Access Risk → Create → enter Access Risk ID, business process &amp; description → add functions → add the new ruleset → add a risk owner.</li>
+            <li>Once all Risk IDs are maintained → Generate Rule Set.</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="param-callout" style="margin-top:6px;">
+        <span>If only one ruleset exists (GLOBAL) and you upload a custom ruleset with <code>OVERWRITE</code>, GLOBAL is lost.</span>
+        <span>To retain GLOBAL alongside a custom ruleset, use <code>APPEND</code> instead.</span>
+      </div>
+
+      <div class="subhead" style="margin-top:10px;">Rule Set Tips</div>
+      <ul class="kv-list">
+        <li>Start with the SAP-delivered Global Rule Set and customize it to fit your organization.</li>
+        <li>Use a clear naming convention and description for custom rule sets.</li>
+        <li>Thoroughly test custom rule sets before moving them into production.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="panel">
+      <h2>MSMP Rule Types</h2>
+      <dl class="glossary">
+        <dt>Initiator Rule</dt><dd>Directs an incoming request to a specific path &mdash; which path does it go down?</dd>
+        <dt>Agent Rule</dt><dd>Determines the approver &mdash; e.g. Manager, Role Owner, or others.</dd>
+        <dt>Routing Rule</dt><dd>Routes the request to another path when a special circumstance (a detour) is met, including SoD detours.</dd>
+        <dt>Notification Rule</dt><dd>Sends an email notification to the appropriate reviewers about request status.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Overview + Module summary (existing content) -->
+  <!-- ============================================================ -->
+  <div class="top-row">
+    <div class="panel">
+      <h2>SAP GRC Overview</h2>
+      <p>GRC is a strategy and structure that helps organizations manage risk, comply with regulations, and achieve their goals.</p>
+      <p>SAP GRC enables organizations to manage regulations and compliance, and to remove risk from key operations.</p>
+      <p>Clear responsibility definitions, disciplined role provisioning, and tight control over super‑user access are critical to managing organizational risk.</p>
+    </div>
+    <div class="panel">
+      <h2>Access Control (AC)</h2>
+      <p>Mitigates risk in an organization &mdash; required to perform risk control as part of compliance and regulation practice.</p>
+    </div>
+    <div class="panel">
+      <h2>Process Control (PC)</h2>
+      <p>Manages compliance and policy management, letting organizations manage and monitor their internal control environments.</p>
+    </div>
+    <div class="panel">
+      <h2>Risk Management (RM)</h2>
+      <p>Manages risk activities and advance planning &mdash; identifying business risk and implementing measures to control it.</p>
+    </div>
+  </div>
+
+  <!-- AC Modules -->
+  <div class="section-title">SAP GRC Access Control Modules</div>
+  <div class="module-grid">
+
+    <!-- ARA -->
+    <div class="module-card ara">
+      <span class="badge">ARA</span>
+      <h3>Access Risk Analysis</h3>
+      <p class="desc">Identifies, monitors, and mitigates access &amp; segregation‑of‑duties (SoD) risks to ensure compliance and reduce security vulnerabilities.</p>
+
+      <div class="subhead">Types of risk</div>
+      <div class="pill-row">
+        <span class="pill">SoD Risk</span><span class="pill">Critical Action</span><span class="pill">Critical Permission</span>
+      </div>
+      <ul class="kv-list">
+        <li><b>SoD Risk:</b> user has 2+ conflicting actions that enable fraud</li>
+        <li><b>Critical Action:</b> the T‑code itself is a risk (e.g. SCC5, SM01)</li>
+        <li><b>Critical Permission:</b> risk at field/value level (e.g. S_DEVELOP, S_USER_GRP with activity 02)</li>
+      </ul>
+      <div class="divider"></div>
+      <ul class="kv-list">
+        <li><b>Remediation:</b> preventive control</li>
+        <li><b>Mitigation:</b> bypass SoD violations for a set period &mdash; detective control</li>
+      </ul>
+
+      <div class="subhead">Important tables</div>
+      <ul class="table-list">
+        <li><code class="tbl">GRACFUNC</code> Functions</li>
+        <li><code class="tbl">GRACACTRULE</code> SoD action rule detail data</li>
+        <li><code class="tbl">GRACFUNCACT</code> Rule set → function → action mapping</li>
+        <li><code class="tbl">GRACSODRISKOWN</code> SoD risk owner</li>
+        <li><code class="tbl">GRACOWNER</code> Master table, central owner admin</li>
+        <li><code class="tbl">GRACUSERCONN</code> Connector‑specific user (user–system relation)</li>
+      </ul>
+
+      <div class="subhead">Parameters (ARA)</div>
+      <ul class="param-list">
+        <li><span class="param-num">1007</span> Enable rule set change log</li>
+        <li><span class="param-num">1008</span> Enable role change log</li>
+        <li><span class="param-num">1027</span> Enable offline risk analysis (batch)</li>
+        <li><span class="param-num">1028</span> Include expired users</li>
+        <li><span class="param-num">1029</span> Include locked users</li>
+        <li><span class="param-num">1030</span> Include mitigated risk</li>
+      </ul>
+    </div>
+
+    <!-- ARM -->
+    <div class="module-card arm">
+      <span class="badge">ARM</span>
+      <h3>Access Request Management</h3>
+      <p class="desc">Streamlines and automates user access requests, approvals, and provisioning &mdash; secure, compliant, efficient.</p>
+
+      <ul class="kv-list">
+        <li><b>ARA</b> provides the automatic workflow for the access request form</li>
+        <li><b>MSMP</b> builds the workflow for access request management</li>
+      </ul>
+
+      <div class="subhead">Request types</div>
+      <div class="pill-row">
+        <span class="pill">New User</span><span class="pill">Change User</span><span class="pill">Delete User</span>
+        <span class="pill">Lock Account</span><span class="pill">Unlock Account</span><span class="pill">FF ID Access</span>
+      </div>
+
+      <div class="subhead">Important tables</div>
+      <ul class="table-list">
+        <li><code class="tbl">GRACREQUSER</code> User‑specific request info</li>
+        <li><code class="tbl">GRACACTRULE</code> Activity rules per workflow step</li>
+        <li><code class="tbl">GRACCHANGELOG</code> Changes/updates to requests</li>
+        <li><code class="tbl">GRACREQUESTERLOG</code> Requester info log</li>
+        <li><code class="tbl">GRACUSERROLE</code> Roles assigned via ARM</li>
+        <li><code class="tbl">GRACREQITEMS</code> Line items/actions in a request</li>
+        <li><code class="tbl">GRACREQSTAGE</code> Stages &amp; workflow steps</li>
+        <li><code class="tbl">GRACREQPROVITEM</code> Provisioning actions log</li>
+      </ul>
+    </div>
+
+    <!-- EAM -->
+    <div class="module-card eam" style="grid-column: span 2;">
+      <span class="badge">EAM</span>
+      <h3>Emergency Access Mgmt</h3>
+      <p class="desc">Controls temporary, high‑privilege access to critical systems &mdash; monitored "firefighter" access for emergency tasks.</p>
+
+      <div class="subhead">Firefighter concept &mdash; granting access</div>
+      <ul class="kv-list">
+        <li><b>ID based:</b> normal user ID linked to FF ID for 1&ndash;5 days</li>
+        <li><b>Role based:</b> FF role assigned to user ID for the request duration</li>
+      </ul>
+
+      <div class="subhead">Centralized vs. Decentralized EAM</div>
+      <div class="compare-box">
+        <div class="compare-col central">
+          <div class="compare-head"><span class="compare-dot"></span>Centralized EAM</div>
+          <ul>
+            <li>User ID exists in <b>both</b> the SAP GRC system and the backend system</li>
+            <li>Emergency tasks initiated centrally via T‑code <code class="tbl">GRAC_EAM</code> / <code class="tbl">GRAC_SPM</code></li>
+            <li>Users log on to the GRC system and use assigned Firefighter IDs (FFIDs) to reach backend systems</li>
+            <li>If GRC is down, emergency tasks <b>cannot</b> be performed in the backend</li>
+          </ul>
+          <span class="compare-flag warn">GRC downtime = blocked</span>
+        </div>
+        <div class="compare-col decentral">
+          <div class="compare-head"><span class="compare-dot"></span>Decentralized EAM</div>
+          <ul>
+            <li>User ID exists <b>in the backend system</b></li>
+            <li>Emergency tasks executed directly in each backend system</li>
+            <li>Firefighters log on to backend systems and act independently via <code class="tbl">/n/GRCPI/GRIA_EAM</code></li>
+            <li>Even if GRC is down, emergency tasks can <b>still</b> be performed in the backend</li>
+          </ul>
+          <span class="compare-flag ok">GRC‑downtime resilient</span>
+        </div>
+        <div class="param-callout">
+          <span>Controlled by <code>Parameter 4015</code></span>
+          <span>Centralized → <code>4015 = NO</code> &nbsp;|&nbsp; Decentralized → <code>4015 = YES</code></span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="subhead">Important tables</div>
+      <ul class="table-list">
+        <li><code class="tbl">GRACFFOWNER</code> FF owners list</li>
+        <li><code class="tbl">GRACFFUSER</code> FF ID's users</li>
+        <li><code class="tbl">GRACFFUSERT</code> FF ID assignment details</li>
+        <li><code class="tbl">GRACOBJECTT</code> Text table, FF ID &amp; role</li>
+        <li><code class="tbl">GRAC_FFSESSION</code> (T‑code) FF log review status</li>
+      </ul>
+
+      <div class="subhead">Parameters (4000 series &mdash; EAM/FF)</div>
+      <ul class="param-list">
+        <li><span class="param-num">4000</span> ID based or role based</li>
+        <li><span class="param-num">4001</span> Default firefighter validity period (days)</li>
+        <li><span class="param-num">4010</span> FF ID role</li>
+        <li><span class="param-num">4015</span> Centralized (NO) vs Decentralized (YES) EAM</li>
+      </ul>
+    </div>
+
+    <!-- BRM -->
+    <div class="module-card brm">
+      <span class="badge">BRM</span>
+      <h3>Business Role Management</h3>
+      <p class="desc">Creates, manages, and maintains business roles &mdash; defines, models, and controls access roles for compliance and reduced SoD risk.</p>
+
+      <div class="subhead">Key features</div>
+      <ul class="kv-list">
+        <li>Centralized role management</li>
+        <li>Role modelling and design</li>
+        <li>Workflow‑based role approval</li>
+        <li>Role versioning &amp; history tracking</li>
+        <li>Segregation of Duties (SoD) analysis</li>
+      </ul>
+
+      <div class="subhead">Role types</div>
+      <div class="pill-row">
+        <span class="pill">SIN – Single</span><span class="pill">COM – Composite</span>
+        <span class="pill">BUS – Business</span><span class="pill">DRD – Derived</span>
+      </div>
+
+      <div class="subhead">Important tables</div>
+      <ul class="table-list">
+        <li><code class="tbl">GRACROLE</code> Roles available in GRC</li>
+        <li><code class="tbl">GRACROLEAPPRVR</code> Role approver</li>
+        <li><code class="tbl">GRACROLERELAT</code> Role relationship (Business→Composite→Single)</li>
+        <li><code class="tbl">GRACROLEREQ</code> Role request details</li>
+        <li><code class="tbl">GRACROLESTATUS</code> Role status table</li>
+        <li><code class="tbl">GRACROLETYPE</code> Role type table</li>
+      </ul>
+
+      <div class="subhead">Parameters (BRM)</div>
+      <ul class="param-list">
+        <li><span class="param-num">3004</span> PRD &mdash; default role status</li>
+        <li><span class="param-num">3005</span> No &mdash; reset role methodology on attribute change</li>
+        <li><span class="param-num">3014</span> Yes &mdash; allow role generation with permission‑level violations</li>
+      </ul>
+      <p style="font-size:12.3px; margin-top:2px;"><b>Role for Role Owner:</b> <code class="tbl">SAP_GRAC_ROLE_MGMT_ROLE_OWNER</code></p>
+    </div>
+  </div>
+
+  <!-- Bottom row -->
+  <div class="section-title">Roles, Ruleset &amp; Background Jobs</div>
+  <div class="bottom-row">
+
+    <div class="panel">
+      <h2>Roles Assigned in GRC AC</h2>
+      <p style="margin-bottom:10px;">Default role + commonly assigned roles for each responsibility.</p>
+      <ul class="role-list">
+        <li><span class="role-name">Access Request Approver <em>(owner/manager)</em></span><span class="role-code">SAP_GRAC_ACCESS_APPROVER</span></li>
+        <li><span class="role-name">Risk Owner</span><span class="role-code">SAP_GRAC_RISK_OWNER</span></li>
+        <li><span class="role-name">Mitigation Approver</span><span class="role-code">SAP_GRAC_CONTROL_APPROVER</span></li>
+        <li><span class="role-name">Mitigation Control Monitor</span><span class="role-code">SAP_GRAC_CONTROL_MONITOR</span></li>
+        <li><span class="role-name">Create AC Mitigation Control</span><span class="role-code">SAP_GRAC_CONTROL_OWNER</span></li>
+        <li><span class="role-name">Access Request Administrator</span><span class="role-code">SAP_GRAC_ACCESS_REQUEST_ADMIN</span></li>
+        <li><span class="role-name">End User</span><span class="role-code">SAP_GRAC_ACCESS_REQUESTER</span></li>
+        <li><span class="role-name">Ability to Perform Risk Analysis</span><span class="role-code">SAP_GRAC_RISK_ANALYSIS</span></li>
+        <li><span class="role-name">FF Owner</span><span class="role-code">SAP_GRAC_SUPER_USER_MGMT_OWNER</span></li>
+        <li><span class="role-name">FF Controller</span><span class="role-code">SAP_GRAC_SUPER_USER_MGMT_CNTLR</span></li>
+        <li><span class="role-name">FF User</span><span class="role-code">SAP_GRAC_SUPER_USER_MGMT_USER</span></li>
+        <li><span class="role-name">FFID User <em>(service user)</em></span><span class="role-code">SAP_GRAC_SPM_FFID + FF roles</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>GRC AC Ruleset Components</h2>
+      <dl class="glossary">
+        <dt>Ruleset</dt><dd>A collection of risk IDs that defines potential risks within an SAP system.</dd>
+        <dt>Risk ID</dt><dd>Identifies specific risks, each linked to actions that could lead to SoD conflicts.</dd>
+        <dt>Function</dt><dd>A grouping of critical actions or permissions that, when paired, may lead to conflicts.</dd>
+        <dt>Action</dt><dd>Transactions within functions that cause Critical Action or SoD risk.</dd>
+        <dt>Permission</dt><dd>Specific authorizations required to execute actions within a function.</dd>
+        <dt>SoD Risk</dt><dd>Arises when conflicting functions are assigned to the same user, breaching compliance.</dd>
+      </dl>
+    </div>
+
+    <div class="panel">
+      <h2>Background Jobs &amp; Default Roles</h2>
+      <div class="subhead">Background jobs</div>
+      <ul class="job-list">
+        <li>GRAC_REPOSITORY_OBJECT_SYNC</li>
+        <li>GRAC_ACTION_USAGE_SYNC</li>
+        <li>GRAC_PFCG_AUTHORIZATION_SYNC</li>
+        <li>GRAC_BATCH_RISK_ANALYSIS</li>
+        <li>GRAC_SPM_LOG_SYNC_UPDATE</li>
+        <li>GRAC_SPM_SYNC</li>
+      </ul>
+      <div class="subhead">Default roles to users</div>
+      <ul class="kv-list">
+        <li><b>SAP_GRC_FN_BASE</b> &mdash; base role to run GRC applications</li>
+        <li><b>SAP_GRC_FN_BUSINESS_USER</b> &mdash; for business users</li>
+        <li><b>SAP_GRC_NWBC</b> &mdash; for Governance, Risk &amp; Compliance</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>SAP GRC (AC) Cheat Sheet · Redesigned reference layout</footer>
+</div>
+</body>
+</html>

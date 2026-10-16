@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MSMP Workflow Configuration Simulator</title>
+<meta name="description" content="Practice the 7 steps of SAP GRC MSMP workflow configuration: process, rules, agents, templates, paths, route mapping and versions. Runs in your browser; not connected to any SAP system.">
+<meta name="theme-color" content="#0B1E33">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/msmp.css">
+<link rel="stylesheet" href="css/nav-mobile.css">
+</head>
+<body>
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="title-block">
+      <span class="eyebrow">Practice Tool · SAP GRC Workflow Engine</span>
+      <h1>MSMP Workflow Simulator</h1>
+    </div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="ecc.html">ECC Security</a>
+      <a href="grc.html">GRC (AC)</a>
+      <a href="brfplus.html">BRF+ Cheat Sheet</a>
+      <a href="msmp.html" class="active">MSMP Simulator</a>
+      <a href="fiori.html">Fiori Security</a>
+      <a href="uar.html">UAR Review</a>
+    </nav>
+  </header>
+
+  <main class="sim" id="sim">
+    <div class="hdr">
+      <div class="brand"><b>GRC</b>Access Control</div>
+      <div class="title" id="hTitle"></div>
+      <div class="tools">
+        <label><input type="checkbox" id="learnChk" checked onchange="st.learn=this.checked;save();render()"> Learning notes</label>
+        <a class="lnk" href="https://shreedharsir.netlify.app/" target="_blank" rel="noopener">Learning site</a>
+        <button type="button" onclick="loadSample()">Load sample</button>
+        <button type="button" onclick="loadBlank()">Start blank</button>
+      </div>
+    </div>
+    <div class="wiz" id="wiz"></div>
+    <div class="main" id="main"></div>
+    <noscript><div class="main"><p>This simulator needs JavaScript enabled.</p></div></noscript>
+  </main>
+
+  <p class="site-foot">MSMP Workflow Simulator · Practice only, not connected to any SAP system</p>
+</div>
+
+<div class="foot">
+  <div class="note">Practice simulator. Not connected to any SAP system. Field names can differ a little by support package. More notes: <a href="https://shreedharsir.netlify.app/" target="_blank" rel="noopener">shreedharsir.netlify.app</a></div>
+  <div>
+    <button type="button" class="btn" id="bBack" onclick="go(st.step-1)">Back</button>
+    <button type="button" class="btn em" id="bNext" onclick="go(st.step+1)">Next</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/msmp.js"></script>
+</body>
+</html>

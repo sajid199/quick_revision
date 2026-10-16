@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP GRC UAR (User Access Review) Cheat Sheet</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0B1E33">
+<link rel="stylesheet" href="css/uar.css">
+<link rel="stylesheet" href="css/nav-mobile.css">
+</head>
+<body>
+<div class="sheet">
+
+  <!-- Header -->
+  <div class="masthead">
+    <div class="title-block">
+      <span class="eyebrow">Reference Sheet · SAP GRC User Access Review</span>
+      <h1>UAR (User Access Review) Cheat Sheet</h1>
+    </div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="ecc.html">ECC Security</a>
+      <a href="grc.html">GRC (AC)</a>
+      <a href="brfplus.html">BRF+ Cheat Sheet</a>
+      <a href="msmp.html">MSMP Simulator</a>
+      <a href="fiori.html">Fiori Security</a>
+      <a href="uar.html" class="active">UAR Review</a>
+    </nav>
+  </div>
+
+  <!-- Overview row -->
+  <div class="top-row">
+    <div class="panel">
+      <h2>What is UAR?</h2>
+      <p>A periodic access recertification process built on GRC AC &amp; MSMP &mdash; managers or role owners confirm each user's access is still appropriate for their current job/role.</p>
+      <p>Unwanted or stale access is flagged and removed as part of the review cycle.</p>
+    </div>
+    <div class="panel">
+      <h2>Why run it</h2>
+      <p>To check access is appropriate for the current role, and to strip out unwanted access before it becomes a risk.</p>
+    </div>
+    <div class="panel">
+      <h2>Audit cadence</h2>
+      <p>Standard audit requirement: run UAR <b>once every 6 months</b>.</p>
+    </div>
+    <div class="panel">
+      <h2>Who reviews</h2>
+      <p><b>Manager</b> or <b>Role Owner</b> &mdash; decided via config parameter <code class="tbl">2006</code>.</p>
+    </div>
+  </div>
+
+  <!-- Reviewer decision -->
+  <div class="section-title">Reviewer Configuration &mdash; Manager vs. Role Owner</div>
+  <div class="panel" style="margin-bottom:16px;">
+    <h2>Param 2006 &mdash; Who are the reviewers?</h2>
+    <div class="compare-box">
+      <div class="compare-col">
+        <div class="compare-head"><span class="compare-dot"></span>Role Owner</div>
+        <ul>
+          <li>No extra system integration required</li>
+          <li>Review task routed to the owner of the role assigned to the user</li>
+          <li>Most common setup when HR/AD data isn't synced to GRC</li>
+        </ul>
+        <span class="compare-flag ok">Selected in this build</span>
+      </div>
+      <div class="compare-col decentral">
+        <div class="compare-head"><span class="compare-dot"></span>Manager</div>
+        <ul>
+          <li>Review task routed to the user's line manager</li>
+          <li>Requires <b>LDAP</b> or <b>Active Directory</b> integrated with GRC to resolve manager relationships</li>
+          <li>Without AD/LDAP integration this option cannot resolve reviewers</li>
+        </ul>
+        <span class="compare-flag warn">Needs LDAP/AD</span>
+      </div>
+      <div class="param-callout">
+        <span>Configured at <code>SPRO &gt; GRC &gt; AC &gt; Maintain Configuration Settings</code></span>
+        <span>Param <code>2006</code> = <code>ROLE OWNER</code></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Implementation steps -->
+  <div class="section-title">UAR Implementation Steps</div>
+  <div class="module-grid">
+
+    <!-- Step 1 -->
+    <div class="module-card ara">
+      <span class="badge">STEP 1</span>
+      <h3>Configure Reviewer Parameters</h3>
+      <p class="desc">Set the UAR‑related parameters under Parm Group 07 before touching workflow.</p>
+      <span class="path-chip">SPRO &gt; GRC &gt; AC &gt; Maintain Configuration Settings</span>
+      <div class="subhead">UAR parameters</div>
+      <ul class="param-list">
+        <li><span class="param-num">2004</span> Request type for UAR</li>
+        <li><span class="param-num">2005</span> Default priority</li>
+        <li><span class="param-num">2006</span> Who are the reviewers?</li>
+        <li><span class="param-num">2007</span> Admin review required before sending tasks to reviewers</li>
+        <li><span class="param-num">2008</span> Number of line items per UAR request</li>
+        <li><span class="param-num">2062</span> Send notification to users whose access is removed</li>
+      </ul>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="module-card arm">
+      <span class="badge">STEP 2</span>
+      <h3>Activate UAR Workflow in MSMP</h3>
+      <p class="desc">Wire up the MSMP workflow that routes UAR tasks to the chosen reviewer.</p>
+      <span class="path-chip">SPRO &gt; GRC &gt; AC &gt; Workflow for AC &gt; Maintain MSMP Workflows</span>
+      <ul class="kv-list">
+        <li>Select process <code class="tbl">SAP_GRAC_USER_ACCESS_REVIEW</code></li>
+        <li>Go to Edit mode, step through to <b>Step 5 &mdash; Maintain Paths</b></li>
+        <li>Only one path: <code class="tbl">GRAC_DEFAULT_PATH</code></li>
+        <li>Only one stage: <code class="tbl">GRAC_DEFAULT_STAGE</code></li>
+        <li>Set Agent ID = <code class="tbl">GRAC_UAR_REVIEWER</code>, Approval Type = <b>Any One Approver</b></li>
+      </ul>
+      <div class="divider"></div>
+      <ul class="kv-list">
+        <li><b>Step 7:</b> Save &amp; Simulate &mdash; validates config, prompts for a Transport Request</li>
+        <li><b>Activate</b> the workflow &mdash; without this, config changes won't take effect</li>
+      </ul>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="module-card eam" style="grid-column: span 2;">
+      <span class="badge">STEP 3</span>
+      <h3>Enable Request Type &amp; Generate UAR Requests</h3>
+      <p class="desc">Turn on the UAR request type, then run the two background jobs that create and route the requests.</p>
+
+      <div class="subhead">Enable request type</div>
+      <span class="path-chip">SPRO &gt; GRC &gt; AC &gt; User Provisioning &gt; Define Request Types</span>
+      <ul class="kv-list">
+        <li>Request type <b>11 &mdash; UAR Review</b> must be <b>Active</b>, mapped to MSMP process <code class="tbl">SAP_GRAC_USER_ACCESS_REVIEW</code></li>
+        <li>Set parameter <code class="tbl">2004 = 011</code> (UAR Review) at Maintain Configuration Settings</li>
+      </ul>
+
+      <div class="divider"></div>
+
+      <div class="subhead">Run the jobs (in order)</div>
+      <span class="path-chip">NWBC &gt; Access Management &gt; Scheduling &gt; Background Scheduler</span>
+      <ul class="job-list">
+        <li>Job 1 &mdash; Activity: "Generates data for access request UAR review" (filter by Business Process, Connector, Critical Level, System Env, Role Name/Sensitivity, User Group/ID/Type, etc.)</li>
+        <li>Job 2 &mdash; Activity: "Update Workflow for UAR request" (run once Job 1 completes, non‑recurring)</li>
+      </ul>
+      <p style="font-size:12px;">Check status at <code class="tbl">NWBC &gt; Access Management &gt; Scheduling &gt; Background Jobs</code>, then open <b>View Results</b> for the event log.</p>
+
+      <div class="subhead">Sample event log</div>
+      <ul class="event-log">
+        <li><span class="dot"></span>Extraction from ERM completed</li>
+        <li><span class="dot"></span>Request to be grouped by role owner</li>
+        <li><span class="dot"></span>Admin review is configured as not required</li>
+        <li><span class="dot"></span>N UAR requests has to be created / Request generation started</li>
+        <li class="warn"><span class="dot"></span>No co‑ordinator found for user &lt;ID&gt; &mdash; role owner/coordinator mapping missing for that user</li>
+        <li><span class="dot"></span>Request generation completed &mdash; total requests created: N</li>
+      </ul>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="module-card brm">
+      <span class="badge">STEP 4</span>
+      <h3>Search &amp; Track Requests</h3>
+      <p class="desc">Locate generated UAR requests and follow their approval status.</p>
+      <span class="path-chip">NWBC &gt; Access Management &gt; Access Request Administration &gt; Search Requests</span>
+      <ul class="kv-list">
+        <li>Requests are routed per the reviewer configured in param <code class="tbl">2006</code></li>
+        <li>With Role Owner selected, tasks land in the Role Owner's worklist</li>
+        <li>"No co‑ordinator found" warnings mean that user's request needs a manual reviewer fix</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bottom row -->
+  <div class="section-title">Parameters, Objects &amp; Reference</div>
+  <div class="bottom-row">
+
+    <div class="panel">
+      <h2>UAR Parameter Quick Reference</h2>
+      <p style="margin-bottom:10px;">Parm Group 07 &mdash; all configured at Maintain Configuration Settings.</p>
+      <ul class="role-list">
+        <li><span class="role-name">Request Type for UAR</span><span class="role-code">2004</span></li>
+        <li><span class="role-name">Default Priority</span><span class="role-code">2005</span></li>
+        <li><span class="role-name">Who are the reviewers?</span><span class="role-code">2006</span></li>
+        <li><span class="role-name">Admin review required?</span><span class="role-code">2007</span></li>
+        <li><span class="role-name">Line items per UAR request</span><span class="role-code">2008</span></li>
+        <li><span class="role-name">Notify users on access removal</span><span class="role-code">2062</span></li>
+        <li><span class="role-name">UAR request type value (11)</span><span class="role-code">011</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Key Objects</h2>
+      <dl class="glossary">
+        <dt>MSMP Process ID</dt><dd><code class="tbl">SAP_GRAC_USER_ACCESS_REVIEW</code></dd>
+        <dt>Default Path</dt><dd><code class="tbl">GRAC_DEFAULT_PATH</code></dd>
+        <dt>Default Stage</dt><dd><code class="tbl">GRAC_DEFAULT_STAGE</code></dd>
+        <dt>Agent ID (reviewer)</dt><dd><code class="tbl">GRAC_UAR_REVIEWER</code></dd>
+        <dt>Request Type</dt><dd>11 &ndash; UAR Review</dd>
+      </dl>
+    </div>
+
+    <div class="panel">
+      <h2>Navigation Cheat‑Paths</h2>
+      <div class="subhead">SPRO (config)</div>
+      <ul class="job-list">
+        <li>GRC &gt; AC &gt; Maintain Configuration Settings</li>
+        <li>GRC &gt; AC &gt; Workflow for AC &gt; Maintain MSMP Workflows</li>
+        <li>GRC &gt; AC &gt; User Provisioning &gt; Define Request Types</li>
+      </ul>
+      <div class="subhead">NWBC (operate)</div>
+      <ul class="job-list">
+        <li>Access Mgmt &gt; Scheduling &gt; Background Scheduler</li>
+        <li>Access Mgmt &gt; Scheduling &gt; Background Jobs</li>
+        <li>Access Mgmt &gt; Access Request Administration &gt; Search Requests</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>SAP GRC UAR (User Access Review) Cheat Sheet · Same layout system as the ECC, GRC AC, BRF+/MSMP &amp; Fiori sheets</footer>
+</div>
+</body>
+</html>

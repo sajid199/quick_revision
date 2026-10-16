@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRF+ &amp; MSMP Workflow Cheat Sheet</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0B1E33">
+<link rel="stylesheet" href="css/brfplus.css">
+<link rel="stylesheet" href="css/nav-mobile.css">
+</head>
+<body>
+<div class="sheet">
+
+  <!-- Header -->
+  <div class="masthead">
+    <div class="title-block">
+      <span class="eyebrow">Reference Sheet · SAP GRC Workflow Engine</span>
+      <h1>BRF+ &amp; MSMP Cheat Sheet</h1>
+    </div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="ecc.html">ECC Security</a>
+      <a href="grc.html">GRC (AC)</a>
+      <a href="brfplus.html" class="active">BRF+ Cheat Sheet</a>
+      <a href="msmp.html">MSMP Simulator</a>
+      <a href="fiori.html">Fiori Security</a>
+      <a href="uar.html">UAR Review</a>
+    </nav>
+  </div>
+
+  <!-- Overview -->
+  <div class="top-row">
+    <div class="panel">
+      <h2>What is BRF+</h2>
+      <p>Business Rule Framework Plus is an ABAP‑based rules engine, part of the NetWeaver stack, used to define and execute business rules without hard‑coding logic into ABAP.</p>
+      <p>A <b>Function</b> receives <b>Context</b> (input) and returns a <b>Result</b>, evaluated through rule sets and expressions such as decision tables, formulas, and rules.</p>
+      <p>Transaction: <code class="tbl">BRF+</code> / <code class="tbl">BRFPLUS</code></p>
+    </div>
+    <div class="panel">
+      <h2>What is MSMP</h2>
+      <p>Multi‑Stage Multi‑Path is GRC's workflow engine &mdash; it lets you build flexible, condition‑based approval workflows for ARM, EAM (FF log review), and BRM.</p>
+      <p>Every workflow is built from a <b>Process ID</b>, an <b>Initiator Rule</b>, one or more <b>Paths</b>, and <b>Stages</b> with assigned <b>Agents</b>.</p>
+      <p>BC Set: <code class="tbl">GRC_MSMP_CONFIGURATION</code></p>
+    </div>
+    <div class="panel">
+      <h2>How they work together</h2>
+      <p>MSMP is the workflow shell &mdash; it decides <i>which path and stage</i> a request goes through. BRF+ is the decision engine behind it &mdash; it decides <i>who approves</i> and <i>which path is triggered</i>.</p>
+      <p>MSMP calls BRF+ for two things: <b>Initiator Rules</b> (which path to route to) and <b>Agent Rules</b> (who the approver is at a stage).</p>
+      <p>Rule shells are generated from MSMP via <code class="tbl">GRFNMW_DEV_RULES</code>, then built out inside BRF+.</p>
+    </div>
+  </div>
+
+  <!-- Module cards -->
+  <div class="section-title">Core Components</div>
+  <div class="module-grid">
+
+    <!-- BRF+ Application & Function -->
+    <div class="module-card c1">
+      <span class="badge">BRF+</span>
+      <h3>Application &amp; Function</h3>
+      <p class="desc">The container and the interface: every rule lives inside an application, and every application exposes one or more functions.</p>
+
+      <div class="subhead">Building blocks</div>
+      <ul class="kv-list">
+        <li><b>Application:</b> top‑level container &mdash; holds functions, data objects, rule sets</li>
+        <li><b>Function:</b> the interface between the calling program and the rules &mdash; defined by Context (input) + Result (output)</li>
+        <li><b>Data Object:</b> element, structure, or table used inside expressions</li>
+        <li><b>Ruleset:</b> a group of rules assigned to exactly one function; priority (0&ndash;99) sets execution order</li>
+      </ul>
+      <div class="divider"></div>
+      <ul class="kv-list">
+        <li><b>Event mode:</b> function runs its rule sets in priority order at runtime</li>
+        <li>Changing to Event mode resets the result data object &mdash; must be reconfigured manually</li>
+      </ul>
+
+      <div class="subhead">Key transaction</div>
+      <div class="pill-row"><span class="pill">BRF+ / BRFPLUS</span><span class="pill">GRFNMW_DEV_RULES</span></div>
+    </div>
+
+    <!-- BRF+ Expressions -->
+    <div class="module-card c2">
+      <span class="badge">BRF+</span>
+      <h3>Expression Types</h3>
+      <p class="desc">Expressions hold the actual logic inside a rule set &mdash; the decision table is the most commonly used in GRC agent/initiator rules.</p>
+
+      <ul class="kv-list">
+        <li><b>Decision Table:</b> maps input column combinations to a result row &mdash; easiest to read and maintain</li>
+        <li><b>Decision Tree:</b> branches sequentially on conditions</li>
+        <li><b>Formula:</b> performs calculations on data objects</li>
+        <li><b>Rule / Boolean:</b> combines conditions with AND / OR / NOT</li>
+        <li><b>Procedure Call:</b> calls a function module or class method</li>
+        <li><b>Database Lookup:</b> reads values from a custom or standard table</li>
+      </ul>
+
+      <div class="subhead">Common GRC use in AC</div>
+      <ul class="kv-list">
+        <li>Agent rule via <b>DB Lookup</b> on a custom table</li>
+        <li>Agent rule via <b>role membership</b> (users assigned to a PFCG role)</li>
+        <li>Initiator rule to route requests to different paths</li>
+      </ul>
+    </div>
+
+    <!-- MSMP Process, Path, Stage -->
+    <div class="module-card c3">
+      <span class="badge">MSMP</span>
+      <h3>Process, Path &amp; Stage</h3>
+      <p class="desc">The structural hierarchy of a workflow &mdash; every request follows exactly one path made of ordered stages.</p>
+
+      <ul class="kv-list">
+        <li><b>Process ID:</b> the workflow scenario, e.g. <code class="tbl">SAP_GRAC_ACCESS_REQUEST</code></li>
+        <li><b>Initiator Rule:</b> one active rule per Process ID &mdash; decides which path (Rule Result) a request takes</li>
+        <li><b>Path:</b> a defined sequence of approval stages (e.g. Manager &rarr; Security &rarr; Role Owner)</li>
+        <li><b>Stage:</b> a single approval step within a path, with its own agent(s)</li>
+        <li><b>Route Mapping:</b> links a request's attributes to the correct path/stage combination</li>
+      </ul>
+
+      <div class="subhead">Notifications</div>
+      <ul class="kv-list">
+        <li>Configured per Agent + Event + Template</li>
+        <li>Sent on <b>REQUEST_SUBMISSION</b> or <b>END_OF_REQUEST</b></li>
+        <li>Templates reference an SE61 document; variables personalize the message</li>
+      </ul>
+    </div>
+
+    <!-- MSMP Agents & Rules -->
+    <div class="module-card c4">
+      <span class="badge">MSMP</span>
+      <h3>Agents &amp; Rule Types</h3>
+      <p class="desc">An Agent ID tells MSMP who should act at a stage. GRC supports four ways to determine that agent.</p>
+
+      <ul class="kv-list">
+        <li><b>Directly mapped users:</b> a fixed user or small team handles the stage</li>
+        <li><b>PFCG role‑based:</b> whoever holds a given role in the GRC system becomes approver</li>
+        <li><b>User group‑based:</b> all members of a defined user group are notified</li>
+        <li><b>GRC API rules (BRF+):</b> dynamically determines the owner from conditions (e.g. module‑based routing to FI vs SD security teams)</li>
+      </ul>
+      <div class="divider"></div>
+
+      <div class="subhead">Rule categories in Maintain Rules</div>
+      <div class="pill-row">
+        <span class="pill">Function Module rule</span><span class="pill">ABAP Class rule</span><span class="pill">BRF+ rule</span>
+      </div>
+      <p style="font-size:12.3px; margin-top:4px;">All three appear as <b>GRC API Rules</b> when assigning an Agent Type in MSMP.</p>
+    </div>
+  </div>
+
+  <!-- Build steps + tables -->
+  <div class="section-title">Configuration Flow &amp; Reference</div>
+  <div class="bottom-row">
+
+    <div class="panel">
+      <h2>Build an ARM Workflow &mdash; Step by Step</h2>
+      <ol class="flow">
+        <li><b>Activate BC Set</b> &mdash; SPRO &rarr; GRC &rarr; Access Control &rarr; Workflow for Access Control &rarr; Activate MSMP BC Set (<code class="tbl">GRC_MSMP_CONFIGURATION</code>)</li>
+        <li><b>Define initiator &amp; agent rules</b> in BRF+ (generate rule shell via <code class="tbl">GRFNMW_DEV_RULES</code>, build logic in BRF+)</li>
+        <li><b>Maintain Rules</b> in MSMP &mdash; register the new rule so it's available for selection</li>
+        <li><b>Add Agent Rule</b> &mdash; MSMP Workflow Configuration &rarr; Maintain Agent Rule &rarr; add rule details &amp; rule result</li>
+        <li><b>Maintain Agents</b> &mdash; add new Agent ID as a GRC API Rule under MSMP &rarr; Maintain Agents</li>
+        <li><b>Create path &amp; stages</b> &mdash; add stages and assign approvers/agents to each stage</li>
+        <li><b>Set Global Initiator</b> &mdash; MSMP &rarr; Global Rules &rarr; assign the new Initiator Rule</li>
+        <li><b>Generate, Simulate &amp; Activate</b> &mdash; MSMP &rarr; Generate Versions &rarr; Save &rarr; Simulate &rarr; Activate</li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2>Important Tables &amp; T‑codes</h2>
+      <div class="subhead">MSMP / Workflow</div>
+      <ul class="table-list">
+        <li><code class="tbl">GRFNMW_DEV_RULES</code> Generate MSMP rule shell (BRF+)</li>
+        <li><code class="tbl">GRFNMW_CONFIG</code> MSMP workflow configuration</li>
+        <li><code class="tbl">GRFNMW_ACTIVATE_PATH</code> Path activation</li>
+        <li><code class="tbl">SWI1 / SWI2_FREQ</code> Standard SAP workflow log/monitor</li>
+      </ul>
+      <div class="subhead">BRF+</div>
+      <ul class="table-list">
+        <li><code class="tbl">BRF+ / BRFPLUS</code> Main BRF+ workbench</li>
+        <li><code class="tbl">FDT_*</code> BRF+ repository tables (package SFDT_CORE)</li>
+      </ul>
+      <div class="subhead">SPRO path (both)</div>
+      <p style="font-size:12.3px;">IMG &rarr; Governance, Risk and Compliance &rarr; Access Control &rarr; Workflow for Access Control &rarr; Define Workflow‑related MSMP rules</p>
+    </div>
+
+    <div class="panel">
+      <h2>Glossary</h2>
+      <dl class="glossary">
+        <dt>Context</dt><dd>The importing parameters passed into a BRF+ function &mdash; the "input" of the rule.</dd>
+        <dt>Result</dt><dd>The output parameter returned by a BRF+ function after rule evaluation.</dd>
+        <dt>Rule Result</dt><dd>The value an Initiator Rule returns, used by MSMP to pick which path a request follows.</dd>
+        <dt>Agent ID</dt><dd>A named reference in MSMP that resolves to one or more approvers at a stage.</dd>
+        <dt>Priority (0&ndash;99)</dt><dd>Execution order of rule sets within a BRF+ function &mdash; 0 runs first.</dd>
+        <dt>Simulate</dt><dd>MSMP's built‑in test step to validate path/stage/agent logic before activating a workflow.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <footer>BRF+ &amp; MSMP Cheat Sheet · Same layout system as the GRC AC Cheat Sheet</footer>
+</div>
+</body>
+</html>

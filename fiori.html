@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP Fiori Security Cheat Sheet</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0B1E33">
+<link rel="stylesheet" href="css/fiori.css">
+<link rel="stylesheet" href="css/nav-mobile.css">
+</head>
+<body>
+<div class="sheet">
+
+  <!-- Header -->
+  <div class="masthead">
+    <div class="title-block">
+      <span class="eyebrow">Reference Sheet · SAP Fiori Launchpad &amp; OData Security</span>
+      <h1>SAP Fiori Security Cheat Sheet</h1>
+    </div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="ecc.html">ECC Security</a>
+      <a href="grc.html">GRC (AC)</a>
+      <a href="brfplus.html">BRF+ Cheat Sheet</a>
+      <a href="msmp.html">MSMP Simulator</a>
+      <a href="fiori.html" class="active">Fiori Security</a>
+      <a href="uar.html">UAR Review</a>
+    </nav>
+  </div>
+
+  <!-- Overview -->
+  <div class="row1">
+    <div class="panel">
+      <h2>Fiori Security Overview</h2>
+      <p>SAP Fiori Security controls how users access Launchpad tiles, apps, and the OData/RFC services that power them &mdash; spanning both the <b>Front-end (Gateway) Server</b> and the <b>Back-end Server</b>.</p>
+      <p>Two common deployment models: <b>Embedded</b> &mdash; Gateway and backend on the same system (typical for S/4HANA) &mdash; and <b>Hub/Central</b> &mdash; a separate Front-end Server routing to one or more Back-end systems via system aliases and trusted RFC.</p>
+    </div>
+  </div>
+
+  <!-- Tcodes / Key concepts / Tables -->
+  <div class="row3">
+    <div class="panel">
+      <h2>Important Transactions</h2>
+      <ul class="tcode-list">
+        <li><span class="code">/UI2/FLPD_CUST</span><span class="desc">Launchpad Designer &mdash; customer catalogs &amp; groups</span></li>
+        <li><span class="code">/UI2/FLPD_CONF</span><span class="desc">Launchpad Designer &mdash; SAP delivered content</span></li>
+        <li><span class="code">/UI2/FLP</span><span class="desc">Launch the Fiori Launchpad</span></li>
+        <li><span class="code">/UI2/FLPCM_CUST</span><span class="desc">Manage Launchpad Spaces &amp; Pages (S/4HANA)</span></li>
+        <li><span class="code">/IWFND/MAINT_SERVICE</span><span class="desc">Activate/register OData service (front-end)</span></li>
+        <li><span class="code">/IWBEP/REG_SERVICE</span><span class="desc">Register OData service (back-end)</span></li>
+        <li><span class="code">/IWFND/GW_CLIENT</span><span class="desc">Gateway Client &mdash; test OData calls</span></li>
+        <li><span class="code">/IWFND/ERROR_LOG</span><span class="desc">Gateway error log</span></li>
+        <li><span class="code">/UI5/UI5_REPOSITORY_LOAD</span><span class="desc">Upload/manage a UI5 app in the ABAP repo</span></li>
+        <li><span class="code">SICF</span><span class="desc">Activate ICF services (required for launch)</span></li>
+        <li><span class="code">PFCG</span><span class="desc">Role maintenance &mdash; assign catalogs/groups/spaces</span></li>
+        <li><span class="code">/UI2/GW_APPS_LOG</span><span class="desc">App usage &amp; performance log</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Key Concepts</h2>
+      <ul class="kv-list">
+        <li><b>Catalog:</b> a container of tiles &amp; target mappings; assigned to roles, never directly to users</li>
+        <li><b>Group:</b> a set of tiles arranged on the user's home page (classic launchpad model)</li>
+        <li><b>Space &amp; Page:</b> newer launchpad content model (S/4HANA 2020+) that extends/replaces groups</li>
+        <li><b>Tile:</b> the visual launcher for an app, linked to a target mapping</li>
+        <li><b>Target Mapping:</b> connects a Semantic Object + Action to the real app (UI5 component, WebDynpro, transaction, or URL)</li>
+        <li><b>Semantic Object:</b> the business entity a tile represents (e.g. SalesOrder) &mdash; used for intent-based navigation</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Important Tables</h2>
+      <ul class="table-list">
+        <li><code class="tbl">/UI2/PAGE_BUILD_CUST</code> Custom page/tile customizing data</li>
+        <li><code class="tbl">/UI2/PAGE_BUILD_PERS</code> User personalization of pages/tiles</li>
+        <li><code class="tbl">/UI2/PAGE_BUILD_DATA</code> Merged active page data (runtime)</li>
+        <li><code class="tbl">/UI2/INTEROP</code> Front-end/back-end interoperability config</li>
+        <li><code class="tbl">/UI5/UI5_REPOSITORY</code> SAPUI5 application repository (BSP storage)</li>
+        <li><code class="tbl">AGR_1251</code> Role authorization data (incl. S_START / S_SERVICE)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Critical auth / ICF services / role building -->
+  <div class="row3">
+    <div class="panel">
+      <h2>Critical Authorization Objects</h2>
+      <ul class="table-list">
+        <li><code class="tbl">S_SERVICE</code> Controls execution of OData/ICF services used by apps</li>
+        <li><code class="tbl">S_START</code> Start authority for UI5 apps/tiles &mdash; auto-added from catalog</li>
+        <li><code class="tbl">S_ICF</code> Protects access to Internet Communication Framework services</li>
+        <li><code class="tbl">S_RFC</code> Front-end ↔ back-end RFC / trusted RFC communication</li>
+        <li><code class="tbl">S_TCODE</code> Needed when a tile launches a classic transaction/WebDynpro</li>
+        <li><code class="tbl">S_RFCACL</code> Trusted RFC connections in hub deployments</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>ICF Services to Activate (SICF)</h2>
+      <ul class="table-list">
+        <li><code class="tbl">/sap/bc/ui5_ui5</code> Serves SAPUI5 application resources</li>
+        <li><code class="tbl">/sap/opu/odata</code> Base node for all OData services</li>
+        <li><code class="tbl">/sap/bc/ui2/flp</code> Fiori Launchpad itself</li>
+        <li><code class="tbl">/sap/bc/ui2/start_up</code> Launchpad bootstrap/startup</li>
+        <li><code class="tbl">/sap/public/bc</code> Public/unauthenticated resources (icons, fonts)</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Role Building Steps</h2>
+      <ol class="flow">
+        <li><b>Catalog:</b> identify the catalog(s) with the needed tiles in /UI2/FLPD_CUST</li>
+        <li><b>Group/Space:</b> add tiles to a Group (classic) or a Space &amp; Page (S/4HANA)</li>
+        <li><b>PFCG:</b> add the catalog + group/space to the role's Menu tab</li>
+        <li><b>Generate:</b> S_START values are pulled in automatically on profile generation</li>
+        <li><b>Backend auth:</b> add S_SERVICE + business objects in the same/companion role</li>
+        <li><b>Assign &amp; test:</b> assign the role to the user and verify in the Launchpad</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Troubleshooting Quick Reference Table -->
+  <div class="section-title">Troubleshooting Quick Reference</div>
+  <div class="row1">
+    <div class="panel">
+      <table class="cheat-table">
+        <thead>
+          <tr>
+            <th>Symptoms</th>
+            <th>Root Cause</th>
+            <th>How to Check</th>
+            <th>Resolution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>User cannot see the tile on Launchpad</td>
+            <td>Missing Catalog, Group, Space/Page, or role</td>
+            <td><code class="tbl">PFCG</code>, Launchpad Content Manager, <code class="tbl">SU01</code></td>
+            <td>Assign the correct Fiori catalog/group/space/page in the role, regenerate profile, user comparison.</td>
+          </tr>
+          <tr>
+            <td>Authorization error after clicking tile</td>
+            <td>Missing authorization object</td>
+            <td><code class="tbl">SU53</code>, <code class="tbl">STAUTHTRACE</code>, <code class="tbl">ST01</code></td>
+            <td>Identify failed authorization object and maintain it in PFCG role.</td>
+          </tr>
+          <tr>
+            <td>Browser displays 403</td>
+            <td>Missing ICF authorization or service authorization</td>
+            <td><code class="tbl">SICF</code>, <code class="tbl">SU53</code></td>
+            <td>Activate required ICF service and provide authorization.</td>
+          </tr>
+          <tr>
+            <td>Page not found (404)</td>
+            <td>OData or ICF service inactive</td>
+            <td><code class="tbl">SICF</code>, <code class="tbl">/IWFND/MAINT_SERVICE</code></td>
+            <td>Activate ICF service and register OData service.</td>
+          </tr>
+          <tr>
+            <td>Application crashes (HTTP 500)</td>
+            <td>Backend ABAP dump or programming issue</td>
+            <td><code class="tbl">ST22</code>, <code class="tbl">SM21</code></td>
+            <td>Analyze dump and coordinate with ABAP team.</td>
+          </tr>
+          <tr>
+            <td>White/blank page after clicking tile</td>
+            <td>JavaScript/UI5 cache issue or browser cache</td>
+            <td>Browser Developer Tools, <code class="tbl">/UI2/INVALIDATE_CACHE</code></td>
+            <td>Clear browser cache, invalidate UI5 cache, check console errors.</td>
+          </tr>
+          <tr>
+            <td>App fails during loading</td>
+            <td>OData service inactive or backend issue</td>
+            <td><code class="tbl">/IWFND/ERROR_LOG</code>, <code class="tbl">/IWBEP/ERROR_LOG</code></td>
+            <td>Register/activate OData service and resolve backend error.</td>
+          </tr>
+          <tr>
+            <td>Save/Create operation fails</td>
+            <td>Invalid or expired CSRF token</td>
+            <td>Browser Network Tab</td>
+            <td>Refresh session or reload application.</td>
+          </tr>
+          <tr>
+            <td>User still cannot see app after role assignment</td>
+            <td>User buffer not refreshed</td>
+            <td><code class="tbl">SU56</code>, <code class="tbl">SU01</code></td>
+            <td>Reset user buffer, log off/on, perform user comparison.</td>
+          </tr>
+          <tr>
+            <td>Tile visible but cannot open</td>
+            <td>Missing Target Mapping</td>
+            <td>Launchpad Designer / Content Manager</td>
+            <td>Create or assign target mapping.</td>
+          </tr>
+          <tr>
+            <td>Navigation fails</td>
+            <td>Incorrect semantic object/action</td>
+            <td>Launchpad Content Manager</td>
+            <td>Correct semantic object and action configuration.</td>
+          </tr>
+          <tr>
+            <td>Service returns 401/403</td>
+            <td>Missing backend authorization</td>
+            <td><code class="tbl">SU53</code>, <code class="tbl">STAUTHTRACE</code></td>
+            <td>Assign missing authorization objects.</td>
+          </tr>
+          <tr>
+            <td>Works in DEV but not QA/PRD</td>
+            <td>Transport missing</td>
+            <td><code class="tbl">STMS</code>, <code class="tbl">SE10</code></td>
+            <td>Transport catalog, role, and backend objects correctly.</td>
+          </tr>
+          <tr>
+            <td>Changes not reflected</td>
+            <td>Launchpad/UI5 cache</td>
+            <td><code class="tbl">/UI2/INVALIDATE_CACHE</code>, <code class="tbl">/UI5/APP_INDEX_CALCULATE</code></td>
+            <td>Clear caches and rebuild app index.</td>
+          </tr>
+          <tr>
+            <td>"Service Cannot Be Reached"</td>
+            <td>ICF service inactive</td>
+            <td><code class="tbl">SICF</code></td>
+            <td>Activate the required ICF node.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>SAP Fiori Security Cheat Sheet · Same layout system as the ECC, GRC AC &amp; BRF+/MSMP sheets</footer>
+</div>
+</body>
+</html>

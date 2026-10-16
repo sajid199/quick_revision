@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP Security Cheat Sheet</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0B1E33">
+<link rel="stylesheet" href="css/ecc.css">
+<link rel="stylesheet" href="css/nav-mobile.css">
+</head>
+<body>
+<div class="sheet">
+
+  <!-- Header -->
+  <div class="masthead">
+    <div class="title-block">
+      <span class="eyebrow">Reference Sheet · SAP Security Basics</span>
+      <h1>SAP Security Cheat Sheet</h1>
+    </div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="ecc.html" class="active">ECC Security</a>
+      <a href="grc.html">GRC (AC)</a>
+      <a href="brfplus.html">BRF+ Cheat Sheet</a>
+      <a href="msmp.html">MSMP Simulator</a>
+      <a href="fiori.html">Fiori Security</a>
+      <a href="uar.html">UAR Review</a>
+    </nav>
+  </div>
+
+  <!-- Overview -->
+  <div class="row1">
+    <div class="panel">
+      <h2>Security Overview &amp; Importance</h2>
+      <p>SAP Security involves safeguarding SAP systems by managing user access, roles, and authorizations to protect critical business data and maintain compliance with security standards.</p>
+      <p>Effective SAP Security ensures data integrity, mitigates risks, prevents unauthorized access, and supports regulatory compliance across an organization's integrated SAP landscape.</p>
+    </div>
+  </div>
+
+  <!-- Tcodes / User Types / Tables -->
+  <div class="row3">
+    <div class="panel">
+      <h2>Important Transactions</h2>
+      <ul class="tcode-list">
+        <li><span class="code">SU01</span><span class="desc">Create / Change User</span></li>
+        <li><span class="code">SU01D</span><span class="desc">Display User</span></li>
+        <li><span class="code">SU10</span><span class="desc">Mass User Changes</span></li>
+        <li><span class="code">PFCG</span><span class="desc">Role Maintenance</span></li>
+        <li><span class="code">SUIM</span><span class="desc">User Information System</span></li>
+        <li><span class="code">SU53</span><span class="desc">Displays last authorization check that failed</span></li>
+        <li><span class="code">ST01</span><span class="desc">System Trace (STAUTHTRACE for setting trace system‑wide)</span></li>
+        <li><span class="code">PFUD</span><span class="desc">User Master Comparison</span></li>
+        <li><span class="code">SUPC</span><span class="desc">Mass Generation of Profile</span></li>
+        <li><span class="code">SU56</span><span class="desc">Display User Buffer</span></li>
+        <li><span class="code">SU24</span><span class="desc">Maintain Check Indicator</span></li>
+        <li><span class="code">SU25</span><span class="desc">Fill USOBT_C / USOBX_C with SAP default values</span></li>
+        <li><span class="code">SM19</span><span class="desc">Configure Security Audit Log</span></li>
+        <li><span class="code">SM20</span><span class="desc">View Security Audit Log</span></li>
+        <li><span class="code">SUGR</span><span class="desc">Maintain User Group</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>User Type in SAP</h2>
+      <ul class="kv-list">
+        <li><b>Dialog User:</b> individual interactive logins &mdash; personal access with standard checks and password expiration</li>
+        <li><b>System User:</b> background processing, system‑to‑system communication, scheduled tasks &mdash; no interactive login</li>
+        <li><b>Communication User:</b> external RFC connections &mdash; secure programmatic access without GUI login</li>
+        <li><b>Service User:</b> shared user for anonymous/multiple concurrent logins, limited interactive use &mdash; often for web services</li>
+        <li><b>Reference User:</b> assigned to other users to grant additional roles/authorizations without direct logon capability (used when a user's profile assignment would exceed 312 profiles)</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Important Tables</h2>
+      <ul class="table-list">
+        <li><code class="tbl">USR02</code> Logon data</li>
+        <li><code class="tbl">USR04</code> User master authorization</li>
+        <li><code class="tbl">USR10</code> Authorization profiles</li>
+        <li><code class="tbl">USR40</code> Table for illegal passwords</li>
+        <li><code class="tbl">USER_ADDR</code> Address data for users</li>
+        <li><code class="tbl">AGR_USERS</code> Assignment of roles to users</li>
+        <li><code class="tbl">AGR_1251</code> Authorization data for the activity group</li>
+        <li><code class="tbl">AGR_1252</code> Organizational elements for authorizations</li>
+        <li><code class="tbl">AGR_AGRS</code> Roles in composite roles</li>
+        <li><code class="tbl">AGR_DEFINE</code> Role definition</li>
+        <li><code class="tbl">AGR_TIME</code> Timestamp for role (including profile)</li>
+        <li><code class="tbl">USOBT_C</code> Relation transaction → authorization object</li>
+        <li><code class="tbl">USOBX_C</code> Check table for USOBT_C</li>
+        <li><code class="tbl">TDDAT</code> Table authorization group → table relation</li>
+        <li><code class="tbl">TBRG</code> Table authorization groups</li>
+        <li><code class="tbl">TRDIR</code> Program → authorization group relation</li>
+        <li><code class="tbl">E070</code> Stores transport requests &amp; tasks</li>
+        <li><code class="tbl">TACT</code> Available activities in SAP system</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Role Type banner -->
+  <div class="row1">
+    <div class="panel">
+      <h2>Role Type in SAP</h2>
+      <div class="row2" style="margin-bottom:0;">
+        <ul class="kv-list" style="margin:0;">
+          <li><b>Single Role:</b> a set of specific authorizations assigned to users, providing access to perform designated tasks</li>
+          <li><b>Composite Role:</b> groups multiple single roles together, simplifying user role assignment by bundling related authorizations</li>
+        </ul>
+        <ul class="kv-list" style="margin:0;">
+          <li><b>Derived Role:</b> inherits authorizations from a master role, allowing organizational‑level customization while keeping a consistent structure</li>
+          <li><b>Master Role:</b> a template role that acts as the source for derived roles &mdash; contains all authorizations without organizational values filled in</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Access issue / traffic / usobx -->
+  <div class="row3">
+    <div class="panel">
+      <h2>Access Issue</h2>
+      <ul class="kv-list" style="margin-bottom:10px;">
+        <li><b>SU53</b> &mdash; displays the last authorization check that failed</li>
+        <li><b>ST01 / STAUTHTRACE</b> &mdash; set trace on a user ID to check missing authorization</li>
+      </ul>
+      <div class="subhead">Return codes for trace</div>
+      <div class="rc-item"><span class="rc-badge ok">RC = 0</span><p>Authorization check successful.</p></div>
+      <div class="rc-item"><span class="rc-badge warn">RC = 4</span><p>Check unsuccessful &mdash; user has the authorization object in their buffer, but with different values than checked.</p></div>
+      <div class="rc-item"><span class="rc-badge err">RC = 12</span><p>Check unsuccessful &mdash; user does not have the authorization object in their buffer at all.</p></div>
+    </div>
+
+    <div class="panel">
+      <h2>PFCG Traffic Indicator</h2>
+      <div class="traffic-item"><span class="dot red"></span><p><b>Red</b> &mdash; some organizational value has not been maintained in the org field in Profile Generator.</p></div>
+      <div class="traffic-item"><span class="dot yellow"></span><p><b>Yellow</b> &mdash; some or all fields in certain authorization instances are blank (not maintained).</p></div>
+      <div class="traffic-item"><span class="dot green"></span><p><b>Green</b> &mdash; all authorization fields are maintained (values are assigned).</p></div>
+    </div>
+
+    <div class="panel">
+      <h2>USOBX_C &amp; USOBT_C</h2>
+      <p>Both tables are used by <code class="tbl">SU24</code>.</p>
+      <ul class="kv-list">
+        <li><b>USOBX_C:</b> defines the status of authorization checks for authorization objects (check indicator = Yes/No), and whether check values are maintained in SU24.</li>
+        <li><b>USOBT_C:</b> defines the actual "values" maintained for check‑maintained authorization objects.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SU24 banner -->
+  <div class="row1">
+    <div class="panel">
+      <h2>SU24</h2>
+      <div class="row3" style="margin-bottom:0;">
+        <div>
+          <div class="subhead">Check / No</div>
+          <p style="margin:0;">Authorization object is checked at t‑code execution, but no field value is proposed when the t‑code is added to the role menu.</p>
+        </div>
+        <div>
+          <div class="subhead">Check / Yes</div>
+          <p style="margin:0;">Object is checked at execution and automatically pulled into the role when the t‑code is added to the menu &mdash; may or may not carry field values, depending on what's maintained in SU24.</p>
+        </div>
+        <div>
+          <div class="subhead">Do Not Check</div>
+          <p style="margin:0;">Object is not checked at all, even though it may still exist in the ABAP code.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SU25 + Critical auth -->
+  <div class="row2">
+    <div class="panel">
+      <h2>SU25 Steps</h2>
+      <ol class="flow">
+        <li><b>Step 1 — Initial Fill:</b> used the first time Profile Generator is set up (or to reload every SAP default) &mdash; copies SAP's default check indicators &amp; field values into the customer tables (USOBT_C/USOBX_C).</li>
+        <li><b>Step 2a — Prepare Comparison:</b> run first, after an upgrade, to prepare the comparison between your existing SU24 data and the new SAP defaults.</li>
+        <li><b>Step 2b — Compare &amp; Adjust:</b> shows SAP's new default values next to your existing ones so you can adjust check indicators/field values &mdash; same maintenance screen as SU24.</li>
+        <li><b>Step 2c — Roles to Be Updated:</b> flags which roles are affected by the changes with status "profile comparison required," so their profiles can be regenerated (or SAP_NEW can be assigned as a temporary stopgap).</li>
+        <li><b>Step 2d — Transaction Replacements:</b> lists roles containing transaction codes SAP has replaced with new ones, so they can be swapped.</li>
+        <li><b>Step 3 — Transport:</b> transports the changes made in Steps 1, 2a and 2b to other systems.</li>
+        <li><b>Step 4 — Tailor Authorization Checks:</b> same maintenance as calling SU24 directly &mdash; edit check indicators per transaction (Check/Maintain adds the object to Profile Generator; Do Not Check skips it).</li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2>Critical Authorization Objects</h2>
+      <ul class="table-list">
+        <li><code class="tbl">S_TABU_DIS</code> Protects tables using authorization groups with activity</li>
+        <li><code class="tbl">S_TABU_CLI</code> Protects cross‑client tables</li>
+        <li><code class="tbl">S_TABU_NAM</code> Table access control based on table name</li>
+        <li><code class="tbl">S_PROGRAM</code> Controls running ABAP reports/programs via SA38</li>
+        <li><code class="tbl">S_DEVELOP</code> Controls ABAP object access / debug access</li>
+        <li><code class="tbl">S_USER_AGR</code> Used to control roles</li>
+        <li><code class="tbl">S_USER_AUT</code> Checked during authorization maintenance</li>
+        <li><code class="tbl">S_USER_GRP</code> Controls user groups</li>
+        <li><code class="tbl">S_USER_PRO</code> Used for profile maintenance</li>
+        <li><code class="tbl">S_BDC_MONI</code> Protects batch input monitoring</li>
+        <li><code class="tbl">S_BTCH_JOB</code> Background job monitoring &amp; administration</li>
+        <li><code class="tbl">S_BTCH_ADM</code> Background job administration</li>
+        <li><code class="tbl">S_BTCH_NAM</code> User‑level control for background job scheduling</li>
+        <li><code class="tbl">S_ADMI_FCD</code> Basis administration &mdash; spool and monitoring</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Profile Generation Expert Mode -->
+  <div class="section-title">Profile Generation &mdash; Expert Mode (PFCG)</div>
+  <div class="row1">
+    <div class="panel">
+      <p style="margin-bottom:14px;">When you regenerate a profile in PFCG (<b>Authorizations</b> tab &rarr; <b>Change Authorization Data</b> &rarr; <b>Utilities</b> &rarr; <b>Expert Mode</b>), Expert Mode gives you exactly <b>three</b> options for how existing authorization data is treated against the current menu / SU24 defaults. The option you pick determines what survives the regeneration.</p>
+
+      <div class="expert-grid">
+        <div class="expert-card destructive">
+          <span class="tag">Destructive</span>
+          <h4>Delete and Recreate Profile and Authorizations</h4>
+          <p>Wipes out <b>all</b> existing authorization data and rebuilds the profile completely fresh from current SU24 defaults.</p>
+          <ul>
+            <li>All custom / manually changed field values are lost</li>
+            <li>Use only when you deliberately want a clean rebuild</li>
+            <li>Avoid on roles with hand‑maintained field values</li>
+          </ul>
+        </div>
+
+        <div class="expert-card neutral">
+          <span class="tag">No comparison</span>
+          <h4>Edit Old Status</h4>
+          <p>Loads the last‑saved authorization data as‑is &mdash; no comparison is run against the role menu or SU24 updates.</p>
+          <ul>
+            <li>Ignores any t‑codes added or changed in the role menu</li>
+            <li>Open fields already present will not be flagged for update</li>
+            <li>Useful only for touching up existing values, not for menu changes</li>
+          </ul>
+        </div>
+
+        <div class="expert-card recommended">
+          <span class="tag">Recommended</span>
+          <h4>Read Old Status and Merge with New Data</h4>
+          <p>Compares the current role menu / SU24 data against existing authorizations, pulls in new objects, and retains old customized values.</p>
+          <ul>
+            <li>Standard option for day‑to‑day role maintenance</li>
+            <li>Always the correct choice when generating <b>derived roles</b></li>
+            <li>Never use "Delete and recreate" on a derived role</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider" style="margin-top:16px;"></div>
+      <p style="margin-top:10px; margin-bottom:0;"><b>Rule of thumb:</b> use <i>Read old status and merge with new data</i> for routine maintenance and derived‑role generation; reserve <i>Delete and recreate</i> for a genuine clean‑slate rebuild, since it discards every manually maintained field value.</p>
+    </div>
+  </div>
+
+  <!-- Frequently Used Tables quick reference -->
+  <div class="section-title">Frequently Used Tables &mdash; Quick Reference</div>
+  <div class="row3">
+    <div class="panel">
+      <h2>User Tables</h2>
+      <ul class="table-list">
+        <li><code class="tbl">USR02</code> Logon data</li>
+        <li><code class="tbl">USR04</code> User master authorization</li>
+        <li><code class="tbl">USR10</code> Authorization profiles</li>
+        <li><code class="tbl">USR40</code> Table for illegal passwords</li>
+        <li><code class="tbl">USER_ADDR</code> Address data for users</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Role Tables</h2>
+      <ul class="table-list">
+        <li><code class="tbl">AGR_USERS</code> Assignment of roles to users</li>
+        <li><code class="tbl">AGR_1251</code> Authorization data for the activity group</li>
+        <li><code class="tbl">AGR_1252</code> Organizational elements for authorizations</li>
+        <li><code class="tbl">AGR_AGRS</code> Roles in composite roles</li>
+        <li><code class="tbl">AGR_DEFINE</code> Role definition</li>
+        <li><code class="tbl">AGR_TIME</code> Timestamp for role (including profile)</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Other Tables</h2>
+      <ul class="table-list">
+        <li><code class="tbl">USOBT_C</code> Relation transaction → authorization object</li>
+        <li><code class="tbl">USOBX_C</code> Check table for USOBT_C</li>
+        <li><code class="tbl">TDDAT</code> Table authorization group → table relation</li>
+        <li><code class="tbl">TBRG</code> Table authorization groups</li>
+        <li><code class="tbl">TRDIR</code> Program → authorization group relation</li>
+        <li><code class="tbl">E070</code> Stores transport requests &amp; tasks</li>
+        <li><code class="tbl">TACT</code> Available activities in SAP system</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Interview Quick Notes: SU24 vs SU25 -->
+  <div class="section-title">Interview Quick Notes &mdash; SU24 vs SU25</div>
+  <div class="row2">
+    <div class="panel">
+      <h2>When to Use SU24</h2>
+      <p style="margin-bottom:12px;">In simple terms: SU24 is where you tell the Profile Generator <b>what to propose</b> for a transaction before anyone builds a role with it. Use it when:</p>
+      <div class="qa-card">
+        <div class="qa-q">Wrong link</div>
+        <p class="qa-a">An authorization object is <b>not linked correctly</b> to a transaction code &mdash; fix the transaction → object relationship in SU24.</p>
+      </div>
+      <div class="qa-card">
+        <div class="qa-q">Bad default value</div>
+        <p class="qa-a">An authorization object has an <b>unacceptable default value</b> proposed &mdash; correct the value SU24 proposes when the t‑code is added to a role.</p>
+      </div>
+      <div class="qa-card">
+        <div class="qa-q">Reusable across roles</div>
+        <p class="qa-a">You want a default that works for <b>every role</b> that will ever use the transaction &mdash; usually means leaving the field <b>blank</b> in SU24, so each role can maintain its own value instead of inheriting a fixed one.</p>
+      </div>
+      <p style="margin-top:12px; margin-bottom:0;"><b>One-liner for the interview:</b> "SU24 controls what the Profile Generator proposes for a t‑code &mdash; I use it to fix incorrect object/t‑code links and bad default values, and to keep fields blank when different roles legitimately need different values."</p>
+    </div>
+
+    <div class="panel">
+      <h2>SU25 in Simple Terms</h2>
+      <p style="margin-bottom:12px;">SU25 is the <b>one‑time / post‑upgrade tool</b> that loads SAP's SU24 defaults into your customer tables and lets you compare them after an upgrade &mdash; SU24 is for ongoing, transaction‑by‑transaction maintenance.</p>
+      <div class="qa-card">
+        <div class="qa-q">Why use it</div>
+        <p class="qa-a">After an SAP upgrade, new/changed authorization checks ship with new SU24 defaults. SU25 walks you through adopting them without losing what you already customized.</p>
+      </div>
+      <div class="qa-card">
+        <div class="qa-q">First time vs. after upgrade</div>
+        <p class="qa-a"><b>First time</b> using Profile Generator → run Step 1 (initial fill). <b>Already using it, now upgrading</b> → run Steps 2a → 2b → 2c → 2d in that order.</p>
+      </div>
+      <div class="qa-card">
+        <div class="qa-q">SU24 vs SU25</div>
+        <p class="qa-a"><b>SU24</b> = maintain proposals for one transaction at a time, anytime. <b>SU25</b> = bulk‑load/compare SAP's defaults, mainly right after an upgrade; Step 4 of SU25 drops you into the same screen as SU24.</p>
+      </div>
+      <p style="margin-top:12px; margin-bottom:0;"><b>One-liner for the interview:</b> "SU25 is the upgrade tool that syncs the customer authorization tables with SAP's new SU24 defaults and tells me which roles need regeneration; SU24 is what I use day‑to‑day to fine‑tune one transaction's proposal."</p>
+    </div>
+  </div>
+
+  <footer>SAP Security Cheat Sheet · Same layout system as the GRC AC &amp; BRF+/MSMP sheets</footer>
+</div>
+</body>
+</html>
