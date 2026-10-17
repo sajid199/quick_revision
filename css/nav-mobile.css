@@ -1,8 +1,16 @@
-/* Shared: keeps the top navigation on one swipeable row on small screens */
+/* Shared: keeps the top navigation scrollable on small screens */
 @media (max-width:640px){
   body{padding-left:10px;padding-right:10px}
   .masthead{padding:16px 14px;gap:12px;border-radius:14px}
-  .nav-links{flex-wrap:nowrap;overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
-  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links{
+    flex-wrap:nowrap; overflow-x:auto; width:100%;
+    -webkit-overflow-scrolling:touch; scrollbar-width:thin;
+    scrollbar-color:rgba(159,196,255,.75) rgba(255,255,255,.12);
+    padding-bottom:6px;
+  }
+  .nav-links::-webkit-scrollbar{height:6px}
+  .nav-links::-webkit-scrollbar-track{background:rgba(255,255,255,.12);border-radius:999px}
+  .nav-links::-webkit-scrollbar-thumb{background:rgba(159,196,255,.75);border-radius:999px}
+  .nav-links.is-dragging,.nav-links.is-dragging *{cursor:grabbing;user-select:none}
   .nav-links a{flex:0 0 auto;padding:9px 14px}
 }
