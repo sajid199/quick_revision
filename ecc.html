@@ -121,10 +121,6 @@
         <li><b>SU53</b> &mdash; displays the last authorization check that failed</li>
         <li><b>ST01 / STAUTHTRACE</b> &mdash; set trace on a user ID to check missing authorization</li>
       </ul>
-      <div class="subhead">Return codes for trace</div>
-      <div class="rc-item"><span class="rc-badge ok">RC = 0</span><p>Authorization check successful.</p></div>
-      <div class="rc-item"><span class="rc-badge warn">RC = 4</span><p>Check unsuccessful &mdash; user has the authorization object in their buffer, but with different values than checked.</p></div>
-      <div class="rc-item"><span class="rc-badge err">RC = 12</span><p>Check unsuccessful &mdash; user does not have the authorization object in their buffer at all.</p></div>
     </div>
 
     <div class="panel">
@@ -201,49 +197,67 @@
     </div>
   </div>
 
-  <!-- Profile Generation Expert Mode -->
-  <div class="section-title">Profile Generation &mdash; Expert Mode (PFCG)</div>
+  <!-- Profile Generation -->
   <div class="row1">
-    <div class="panel">
-      <p style="margin-bottom:14px;">When you regenerate a profile in PFCG (<b>Authorizations</b> tab &rarr; <b>Change Authorization Data</b> &rarr; <b>Utilities</b> &rarr; <b>Expert Mode</b>), Expert Mode gives you exactly <b>three</b> options for how existing authorization data is treated against the current menu / SU24 defaults. The option you pick determines what survives the regeneration.</p>
-
-      <div class="expert-grid">
-        <div class="expert-card destructive">
-          <span class="tag">Destructive</span>
-          <h4>Delete and Recreate Profile and Authorizations</h4>
-          <p>Wipes out <b>all</b> existing authorization data and rebuilds the profile completely fresh from current SU24 defaults.</p>
-          <ul>
-            <li>All custom / manually changed field values are lost</li>
-            <li>Use only when you deliberately want a clean rebuild</li>
-            <li>Avoid on roles with hand‑maintained field values</li>
-          </ul>
+    <div class="panel profile-modes">
+      <h2>Profile Generation &mdash; 2 Modes</h2>
+      <div class="profile-mode-grid">
+        <div class="profile-mode">
+          <span class="mode-label manual">Manual Mode</span>
+          <p>Used during role creation. Open change authorization data and click generate profile.</p>
         </div>
-
-        <div class="expert-card neutral">
-          <span class="tag">No comparison</span>
-          <h4>Edit Old Status</h4>
-          <p>Loads the last‑saved authorization data as‑is &mdash; no comparison is run against the role menu or SU24 updates.</p>
-          <ul>
-            <li>Ignores any t‑codes added or changed in the role menu</li>
-            <li>Open fields already present will not be flagged for update</li>
-            <li>Useful only for touching up existing values, not for menu changes</li>
-          </ul>
-        </div>
-
-        <div class="expert-card recommended">
-          <span class="tag">Recommended</span>
-          <h4>Read Old Status and Merge with New Data</h4>
-          <p>Compares the current role menu / SU24 data against existing authorizations, pulls in new objects, and retains old customized values.</p>
-          <ul>
-            <li>Standard option for day‑to‑day role maintenance</li>
-            <li>Always the correct choice when generating <b>derived roles</b></li>
-            <li>Never use "Delete and recreate" on a derived role</li>
-          </ul>
+        <div class="profile-mode">
+          <span class="mode-label expert">Expert Mode</span>
+          <p>Used mostly during role modification. Lets you control how old and new authorization data are handled.</p>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="divider" style="margin-top:16px;"></div>
-      <p style="margin-top:10px; margin-bottom:0;"><b>Rule of thumb:</b> use <i>Read old status and merge with new data</i> for routine maintenance and derived‑role generation; reserve <i>Delete and recreate</i> for a genuine clean‑slate rebuild, since it discards every manually maintained field value.</p>
+  <div class="row1">
+    <div class="panel expert-options">
+      <h2>Expert Mode &mdash; 3 Options</h2>
+      <details class="expert-option" open>
+        <summary>Option 1: Delete and Recreate Profile and Authorizations</summary>
+        <ul>
+          <li><span class="option-mark negative" aria-hidden="true">×</span>Deletes old data, including customization</li>
+          <li><span class="option-mark positive" aria-hidden="true">✓</span>Loads fresh authorization data from SU24 for all T-codes in the menu</li>
+          <li><span class="option-mark note" aria-hidden="true">•</span>Use when old customization should be completely removed</li>
+        </ul>
+      </details>
+      <details class="expert-option" open>
+        <summary>Option 2: Edit Old Status</summary>
+        <ul>
+          <li><span class="option-mark positive" aria-hidden="true">✓</span>Keeps old data and customization as-is</li>
+          <li><span class="option-mark negative" aria-hidden="true">×</span>Does not pull authorization data for newly added T-codes</li>
+          <li><span class="option-mark note" aria-hidden="true">•</span>Use when only old authorization data needs editing</li>
+        </ul>
+      </details>
+      <details class="expert-option" open>
+        <summary>Option 3: Read Old Status and Merge with New Data <span class="recommended-label">Recommended</span></summary>
+        <ul>
+          <li><span class="option-mark positive" aria-hidden="true">✓</span>Keeps old data and customization</li>
+          <li><span class="option-mark positive" aria-hidden="true">✓</span>Pulls authorization data for all T-codes, including new ones</li>
+          <li><span class="option-mark positive" aria-hidden="true">✓</span>Best option when the role menu changes</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="panel return-codes">
+      <h2>ST01 &mdash; Return Codes (RC)</h2>
+      <table class="rc-table">
+        <thead>
+          <tr><th>RC Code</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="rc-badge ok">RC = 0</span></td><td>Authorization check successful</td></tr>
+          <tr><td><span class="rc-badge warn">RC = 4</span></td><td>Object exists but field values differ</td></tr>
+          <tr><td><span class="rc-badge err">RC = 8</span></td><td>Required authorization values not found in user buffer</td></tr>
+          <tr><td><span class="rc-badge err">RC = 12</span></td><td>User does not have the object</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
