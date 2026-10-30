@@ -25,6 +25,13 @@
     font-size:clamp(24px,4vw,32px);
   }
   .header .role{color:#B9CCE6; font-size:14px; margin-bottom:28px;}
+  .nav-links{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin:-12px 0 24px;}
+  .nav-links a{
+    color:#EAF2FF;text-decoration:none;font-size:12px;font-weight:700;
+    padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.18);white-space:nowrap;
+  }
+  .nav-links a:hover{background:rgba(255,255,255,.18);}
 
   .script{
     background:var(--paper);
@@ -46,6 +53,10 @@
     color:var(--ink);
     font-weight:600;
     margin-top:6px;
+  }
+
+  @media(max-width:640px){
+    .nav-links{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;width:100%;padding-bottom:6px;margin-top:-12px}
   }
 
   footer{text-align:center; color:#8FB0DA; font-size:12px; margin-top:22px; letter-spacing:.3px;}

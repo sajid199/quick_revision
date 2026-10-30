@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP S/4HANA Greenfield Security Lifecycle</title>
+<meta name="description" content="A practical SAP Activate security blueprint for a greenfield S/4HANA implementation with embedded Fiori, from project preparation through post-go-live operations.">
+<meta name="theme-color" content="#0B1E33">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/greenfield.css">
+<link rel="stylesheet" href="css/nav-mobile.css">
+</head>
+<body>
+<div class="sheet">
+  <header class="masthead">
+    <div class="title-block">
+      <span class="eyebrow">SAP Activate · Security Delivery Blueprint</span>
+      <h1>S/4HANA Greenfield Security</h1>
+      <p class="subtitle">A stage-by-stage lifecycle for a secure SAP S/4HANA implementation with embedded Fiori.</p>
+    </div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="ecc.html">ECC Security</a>
+      <a href="greenfrield.html" class="active" aria-current="page">S/4HANA Greenfield</a>
+      <a href="grc.html">GRC (AC)</a>
+      <a href="brfplus.html">BRF+ Cheat Sheet</a>
+      <a href="msmp.html">MSMP Simulator</a>
+      <a href="fiori.html">Fiori Security</a>
+      <a href="uar.html">UAR Review</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro panel" aria-labelledby="overview-title">
+      <div>
+        <span class="kicker">Implementation lifecycle</span>
+        <h2 id="overview-title">Security built in from day one</h2>
+        <p>Use SAP Activate to plan, design, build, validate and operate security as part of the S/4HANA delivery—not as a last-minute cutover task. This blueprint covers governance, business roles, embedded Fiori access, controls and ongoing operations.</p>
+      </div>
+      <aside class="scope">
+        <span class="scope-label">In scope</span>
+        <strong>SAP S/4HANA</strong>
+        <span>Greenfield · Embedded Fiori</span>
+        <span>DEV → QAS → PRD</span>
+      </aside>
+    </section>
+
+    <nav class="phase-nav panel" aria-label="Jump to an SAP Activate phase">
+      <span class="phase-nav-label">Jump to phase</span>
+      <a href="#prepare"><span>01</span> Prepare</a>
+      <a href="#explore"><span>02</span> Explore</a>
+      <a href="#realize"><span>03</span> Realize</a>
+      <a href="#deploy"><span>04</span> Deploy</a>
+      <a href="#run"><span>05</span> Run</a>
+    </nav>
+
+    <section class="lifecycle" aria-label="SAP Activate security phases">
+      <article class="phase-card prepare" id="prepare">
+        <div class="phase-index">01</div>
+        <div class="phase-content">
+          <div class="phase-heading">
+            <div><span class="phase-label">SAP Activate · Prepare</span><h2>Project setup &amp; strategy</h2></div>
+            <p class="goal">Define the security roadmap, governance framework and initial landscape access.</p>
+          </div>
+          <div class="phase-grid">
+            <div><h3>Key activities</h3><ul>
+              <li>Appoint security workstream owners; agree RACI, decision forums and escalation paths.</li>
+              <li>Confirm system landscape, clients, identity source, authentication approach and access provisioning model.</li>
+              <li>Set security principles: least privilege, role ownership, naming standards, emergency access and SoD controls.</li>
+              <li>Plan environments, transport routes, privileged access and time-bound project access.</li>
+              <li>Identify regulatory, audit, data-protection and security requirements.</li>
+            </ul></div>
+            <div class="deliverable"><h3>Exit with</h3><p>Approved security strategy and RACI, landscape/access matrix, role-design standards, control requirements, delivery plan and initial risk register.</p></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase-card explore" id="explore">
+        <div class="phase-index">02</div>
+        <div class="phase-content">
+          <div class="phase-heading">
+            <div><span class="phase-label">SAP Activate · Explore</span><h2>Fit-to-standard &amp; blueprinting</h2></div>
+            <p class="goal">Gather business requirements, identify standard roles and map Fiori access.</p>
+          </div>
+          <div class="phase-grid">
+            <div><h3>Key activities</h3><ul>
+              <li>Run fit-to-standard workshops by business process; record job roles, tasks and approval responsibilities.</li>
+              <li>Map SAP-delivered business roles, catalogs, spaces and pages to the agreed personas.</li>
+              <li>Identify gaps, custom apps, sensitive transactions, interfaces, batch users and technical accounts.</li>
+              <li>Perform initial SoD and critical-access analysis; agree mitigation or process changes.</li>
+              <li>Define role boundaries, derived-role strategy, organizational values, naming and ownership.</li>
+            </ul></div>
+            <div class="deliverable"><h3>Exit with</h3><p>Approved role-to-persona matrix, Fiori app/catalog mapping, authorization design, SoD rules and mitigations, gap backlog and security requirements traceability.</p></div>
+          </div>
+          <div class="related-links"><span>Reference:</span> <a href="fiori.html">Fiori security</a><a href="grc.html">GRC Access Control</a><a href="uar.html">Access reviews</a></div>
+        </div>
+      </article>
+
+      <article class="phase-card realize" id="realize">
+        <div class="phase-index">03</div>
+        <div class="phase-content">
+          <div class="phase-heading">
+            <div><span class="phase-label">SAP Activate · Realize</span><h2>Role building &amp; system hardening</h2></div>
+            <p class="goal">Build, configure and mass-generate security roles in the Development environment.</p>
+          </div>
+          <div class="phase-grid">
+            <div><h3>Key activities</h3><ul>
+              <li>Configure security baselines and review relevant system, client, password, audit-log and trusted-connection settings.</li>
+              <li>Build and document single, composite and derived roles in PFCG; add Fiori catalogs and spaces/pages as designed.</li>
+              <li>Maintain authorization values and organizational levels; generate profiles and run user comparison.</li>
+              <li>Implement technical-user controls, firefighter/emergency access and required GRC risk rules or mitigations.</li>
+              <li>Unit-test roles and services; resolve SU53/STAUTHTRACE findings and move changes through controlled transports.</li>
+            </ul></div>
+            <div class="deliverable"><h3>Exit with</h3><p>Generated and documented DEV roles, reviewed configuration baseline, tested Fiori content, technical-user inventory, transport evidence and an updated risk/control register.</p></div>
+          </div>
+          <div class="related-links"><span>Reference:</span> <a href="ecc.html">Role administration basics</a><a href="fiori.html">Fiori role setup</a><a href="msmp.html">MSMP workflow practice</a></div>
+        </div>
+      </article>
+
+      <article class="phase-card deploy" id="deploy">
+        <div class="phase-index">04</div>
+        <div class="phase-content">
+          <div class="phase-heading">
+            <div><span class="phase-label">SAP Activate · Deploy</span><h2>Testing &amp; migration to production</h2></div>
+            <p class="goal">Validate roles through rigorous testing, execute cutover and go live.</p>
+          </div>
+          <div class="phase-grid">
+            <div><h3>Key activities</h3><ul>
+              <li>Transport roles and configuration through QAS using approved change and release controls.</li>
+              <li>Execute role-based functional, negative authorization, Fiori launchpad, integration and regression tests.</li>
+              <li>Complete business-user UAT, SoD/risk analysis, privileged-access checks and remediation sign-off.</li>
+              <li>Reconcile approved user-to-role assignments; prepare provisioning, firefighter and break-glass procedures.</li>
+              <li>Rehearse cutover, validate production role generation and user comparison, and confirm go/no-go evidence.</li>
+            </ul></div>
+            <div class="deliverable"><h3>Exit with</h3><p>Signed test evidence and risk acceptance, approved production transports and access list, cutover checklist, rollback/escalation plan and production readiness approval.</p></div>
+          </div>
+          <div class="callout"><strong>Cutover control:</strong> Grant only approved, reconciled access. Track emergency access with an owner, expiry and post-use review.</div>
+        </div>
+      </article>
+
+      <article class="phase-card run" id="run">
+        <div class="phase-index">05</div>
+        <div class="phase-content">
+          <div class="phase-heading">
+            <div><span class="phase-label">SAP Activate · Run</span><h2>Hypercare &amp; operations</h2></div>
+            <p class="goal">Stabilize the system, manage access requests and maintain continuous compliance.</p>
+          </div>
+          <div class="phase-grid">
+            <div><h3>Key activities</h3><ul>
+              <li>Operate a hypercare queue for access issues; triage, trace, resolve and document recurring defects.</li>
+              <li>Process joiner/mover/leaver and role-change requests through approved workflows and owner approvals.</li>
+              <li>Review SoD conflicts, emergency access logs, privileged and technical accounts, and role changes.</li>
+              <li>Run periodic user access reviews; remove stale access and track remediation to closure.</li>
+              <li>Manage releases, role redesign and transports with regression tests, evidence retention and control monitoring.</li>
+            </ul></div>
+            <div class="deliverable"><h3>Operate with</h3><p>Service-level targets and ownership, access-request procedures, recurring risk and UAR schedule, audit-ready evidence, metrics dashboard and continuous-improvement backlog.</p></div>
+          </div>
+          <div class="related-links"><span>Reference:</span> <a href="uar.html">User Access Review</a><a href="grc.html">GRC risk analysis</a><a href="brfplus.html">BRF+ / MSMP reference</a></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel guardrails" aria-labelledby="guardrails-title">
+      <div><span class="kicker">Across every phase</span><h2 id="guardrails-title">Security delivery guardrails</h2></div>
+      <div class="guardrail-grid">
+        <p><strong>Least privilege</strong><span>Design access around job tasks, not convenience or copied legacy roles.</span></p>
+        <p><strong>Traceability</strong><span>Link requirements, role decisions, approvals, tests and transports.</span></p>
+        <p><strong>Segregation of duties</strong><span>Identify conflicts early; remediate or document approved mitigations.</span></p>
+        <p><strong>Controlled change</strong><span>Separate development, approval and production access wherever practical.</span></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>SAP S/4HANA Greenfield Security · SAP Activate lifecycle reference</footer>
+</div>
+<script src="js/nav-mobile.js"></script>
+</body>
+</html>
