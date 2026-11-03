@@ -54,151 +54,169 @@
       <a href="#interview"><span>Q&amp;A</span> Interview</a>
     </nav>
 
-    <section class="lifecycle" aria-label="SAP Activate security phases">
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SAP S/4HANA Greenfield – Security Perspective</title>
+<style>
+:root{--bg:#f3f5f9;--card:#fff;--text:#1a2233;--mute:#5b6478;--line:#dde2ec;--blue:#1f5fd0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141d;--card:#1a2030;--text:#e8ecf5;--mute:#9aa4ba;--line:#2a3247;--blue:#6aa0ff}}
+:root[data-theme="dark"]{--bg:#10141d;--card:#1a2030;--text:#e8ecf5;--mute:#9aa4ba;--line:#2a3247;--blue:#6aa0ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 14px 40px}
+.hero{background:linear-gradient(135deg,#1f5fd0,#4b2fa8);color:#fff;border-radius:16px;padding:22px 20px;text-align:center}
+.hero h1{margin:0 0 4px;font-size:clamp(20px,4.5vw,30px)}
+.hero p{margin:0;opacity:.92}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.chip{background:rgba(255,255,255,.18);border-radius:99px;padding:3px 12px;font-size:13px}
+h2{font-size:18px;margin:26px 0 10px}
+.hint{color:var(--mute);font-size:13px;margin:0 0 10px}
+.phases{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.ph{border:0;color:#fff;border-radius:12px;padding:12px 8px;cursor:pointer;text-align:center;font:inherit;transition:transform .15s,box-shadow .15s;opacity:.78}
+.ph b{display:block;font-size:14px}
+.ph span{display:block;font-size:12px;margin-top:4px;background:rgba(255,255,255,.22);border-radius:6px;padding:2px 0}
+.ph.on{opacity:1;transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.ph:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.bar{display:flex;height:10px;border-radius:99px;overflow:hidden;margin:14px 0 6px}
+.bar i{display:block;height:100%}
+.total{text-align:center;font-weight:700;color:var(--blue)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:12px;border-top:5px solid var(--c,var(--blue))}
+.panel h3{margin:0 0 2px;font-size:18px}
+.panel .sub{color:var(--mute);font-size:13px;margin-bottom:10px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cols h4{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)}
+ul{margin:0;padding-left:18px}
+li{margin:3px 0}
+.say{margin-top:12px;background:rgba(31,95,208,.09);border-left:4px solid var(--blue);padding:10px 12px;border-radius:8px;font-style:italic}
+.say small{display:block;font-style:normal;font-weight:700;color:var(--blue);margin-bottom:2px}
+.tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tag{font-size:12px;border:1px solid var(--line);border-radius:6px;padding:1px 8px;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.pitch{white-space:pre-wrap;outline:none}
+.pitch mark{background:rgba(255,190,0,.3);color:inherit;border-radius:4px;padding:0 3px}
+button.act{font:inherit;background:var(--blue);color:#fff;border:0;border-radius:8px;padding:6px 14px;cursor:pointer;margin-top:10px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:rgba(31,95,208,.1)}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--mute)}
+.foot{margin-top:18px;text-align:center;font-weight:700;color:var(--blue);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+#theme{position:absolute;right:14px;top:calc(10px + env(safe-area-inset-top,0px));font:inherit;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:3px 10px;cursor:pointer}
+@media(max-width:760px){.phases{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button id="theme" aria-label="Toggle theme">Theme</button>
+<div class="wrap">
+  <div class="hero">
+    <h1>SAP S/4HANA Greenfield Implementation</h1>
+    <p>The Security &amp; GRC perspective – timeline at a glance</p>
+    <div class="chips"><span class="chip">Role design</span><span class="chip">Fiori security</span><span class="chip">GRC Access Control</span><span class="chip">SoD &amp; SOX</span></div>
+  </div>
 
-      <article class="phase-card prepare" id="prepare">
-        <div class="phase-index">01</div>
-        <div class="phase-content">
-          <div class="phase-heading">
-            <div><span class="phase-label">SAP Activate · Prepare</span><h2>Project setup &amp; strategy</h2></div>
-            <p class="goal">Define the security roadmap, governance framework and initial landscape access.</p>
-          </div>
-          <div class="phase-grid">
-            <div><h3>Key activities</h3><ul>
-              <li>Appoint security workstream owners; agree RACI, decision forums and escalation paths.</li>
-              <li>Confirm system landscape, clients, identity source, authentication approach and access provisioning model.</li>
-              <li>Set security principles: least privilege, role ownership, naming standards, emergency access and SoD controls.</li>
-              <li>Plan environments, transport routes, privileged access and time-bound project access.</li>
-              <li>Identify regulatory, audit, data-protection and security requirements.</li>
-            </ul></div>
-            <div class="deliverable"><h3>Exit with</h3><p>Approved security strategy and RACI, landscape/access matrix, role-design standards, control requirements, delivery plan and initial risk register.</p></div>
-          </div>
-          <div class="callout"><strong>Say it simply:</strong> In Prepare I build nothing. I learn the scope, the business owners and the BPML, and agree the security approach, so there is no rework later.</div>
-        </div>
-      </article>
+  <h2>1. Timeline – tap a phase</h2>
+  <p class="hint">Durations are typical ranges and vary by project size. Keyboard: Tab + Enter works too.</p>
+  <div class="phases" id="phases"></div>
+  <div class="bar" id="bar"></div>
+  <div class="total">Total duration: 9–15 months</div>
+  <div class="panel" id="panel" aria-live="polite"></div>
 
-      <article class="phase-card explore" id="explore">
-        <div class="phase-index">02</div>
-        <div class="phase-content">
-          <div class="phase-heading">
-            <div><span class="phase-label">SAP Activate · Explore</span><h2>Fit-to-standard &amp; blueprinting</h2></div>
-            <p class="goal">Gather business requirements, identify standard roles and map Fiori access.</p>
-          </div>
-          <div class="phase-grid">
-            <div><h3>Key activities</h3><ul>
-              <li>Run fit-to-standard workshops by business process; record job roles, tasks and approval responsibilities.</li>
-              <li>Map SAP-delivered business roles, catalogs, spaces and pages to the agreed personas.</li>
-              <li>Identify gaps, custom apps, sensitive transactions, interfaces, batch users and technical accounts.</li>
-              <li>Perform initial SoD and critical-access analysis; agree mitigation or process changes.</li>
-              <li>Define role boundaries, derived-role strategy, organizational values, naming and ownership.</li>
-            </ul></div>
-            <div class="deliverable"><h3>Exit with</h3><p>Approved role-to-persona matrix, Fiori app/catalog mapping, authorization design, SoD rules and mitigations, gap backlog and security requirements traceability.</p></div>
-          </div>
-          <div class="callout"><strong>Say it simply:</strong> Explore is the most important phase for security. I turn business processes into job roles and an authorization matrix, agree SoD rules with audit, and get a sign-off before anything is built.</div>
-          <div class="related-links"><span>Reference:</span> <a href="fiori.html">Fiori security</a><a href="grc.html">GRC Access Control</a><a href="uar.html">Access reviews</a></div>
-        </div>
-      </article>
+  <h2>2. Your 60-second answer (edit the highlighted parts)</h2>
+  <div class="card">
+    <div class="pitch" id="pitch" contenteditable="true" spellcheck="false"></div>
+    <button class="act" id="copy">Copy pitch</button>
+  </div>
 
-      <article class="phase-card realize" id="realize">
-        <div class="phase-index">03</div>
-        <div class="phase-content">
-          <div class="phase-heading">
-            <div><span class="phase-label">SAP Activate · Realize</span><h2>Role building &amp; system hardening</h2></div>
-            <p class="goal">Build, configure and mass-generate security roles in the Development environment.</p>
-          </div>
-          <div class="phase-grid">
-            <div><h3>Key activities</h3><ul>
-              <li>Configure security baselines and review relevant system, client, password, audit-log and trusted-connection settings.</li>
-              <li>Build and document single, composite and derived roles in PFCG; add Fiori catalogs and spaces/pages as designed.</li>
-              <li>Maintain authorization values and organizational levels; generate profiles and run user comparison.</li>
-              <li>Implement technical-user controls, firefighter/emergency access and required GRC risk rules or mitigations.</li>
-              <li>Unit-test roles and services; resolve SU53/STAUTHTRACE findings and move changes through controlled transports.</li>
-            </ul></div>
-            <div class="deliverable"><h3>Exit with</h3><p>Generated and documented DEV roles, reviewed configuration baseline, tested Fiori content, technical-user inventory, transport evidence and an updated risk/control register.</p></div>
-          </div>
-          <div class="callout"><strong>Say it simply:</strong> In Realize I build roles in PFCG from the matrix, set up Fiori catalogs, test with SU53 and STAUTHTRACE, run the SoD analysis, and transport roles to QAS before testing starts.</div>
-          <div class="related-links"><span>Reference:</span> <a href="ecc.html">Role administration basics</a><a href="fiori.html">Fiori role setup</a><a href="msmp.html">MSMP workflow practice</a></div>
-        </div>
-      </article>
+  <h2>3. Greenfield vs Brownfield – security view</h2>
+  <div class="card scroll">
+    <table>
+      <tr><th>Area</th><th>Greenfield (new install)</th><th>Brownfield (system conversion)</th></tr>
+      <tr><td>Roles</td><td>Redesigned from scratch, clean and least-privilege</td><td>Existing ECC roles adjusted after SU25 / simplification items</td></tr>
+      <tr><td>Fiori</td><td>Fiori-first: catalogs, groups, spaces and pages designed upfront</td><td>Fiori added on top of legacy role structure</td></tr>
+      <tr><td>SoD</td><td>Ruleset and mitigations baselined before go-live</td><td>Inherited SoD conflicts must be cleaned up</td></tr>
+      <tr><td>Users</td><td>Migrated or newly provisioned, with fresh role mapping</td><td>Users and assignments carried over</td></tr>
+      <tr><td>Risk</td><td>Design effort and testing load are higher</td><td>Legacy access debt moves into S/4</td></tr>
+    </table>
+  </div>
 
-      <article class="phase-card deploy" id="deploy">
-        <div class="phase-index">04</div>
-        <div class="phase-content">
-          <div class="phase-heading">
-            <div><span class="phase-label">SAP Activate · Deploy</span><h2>Testing &amp; migration to production</h2></div>
-            <p class="goal">Validate roles through rigorous testing, execute cutover and go live.</p>
-          </div>
-          <div class="phase-grid">
-            <div><h3>Key activities</h3><ul>
-              <li>Transport roles and configuration through QAS using approved change and release controls.</li>
-              <li>Execute role-based functional, negative authorization, Fiori launchpad, integration and regression tests.</li>
-              <li>Complete business-user UAT, SoD/risk analysis, privileged-access checks and remediation sign-off.</li>
-              <li>Reconcile approved user-to-role assignments; prepare provisioning, firefighter and break-glass procedures.</li>
-              <li>Rehearse cutover, validate production role generation and user comparison, and confirm go/no-go evidence.</li>
-            </ul></div>
-            <div class="deliverable"><h3>Exit with</h3><p>Signed test evidence and risk acceptance, approved production transports and access list, cutover checklist, rollback/escalation plan and production readiness approval.</p></div>
-          </div>
-          <div class="callout"><strong>Cutover control:</strong> Grant only approved, reconciled access. Track emergency access with an owner, expiry and post-use review.</div>
-          <div class="callout"><strong>Say it simply:</strong> In Deploy I run the security part of cutover in order: roles first, then users, then assignments, then emergency access. I rehearse it in the mock cutover so go-live has no surprises.</div>
-        </div>
-      </article>
+  <h2>4. Likely follow-up questions</h2>
+  <div id="qa"></div>
 
-      <article class="phase-card run" id="run">
-        <div class="phase-index">05</div>
-        <div class="phase-content">
-          <div class="phase-heading">
-            <div><span class="phase-label">SAP Activate · Run</span><h2>Hypercare &amp; operations</h2></div>
-            <p class="goal">Stabilize the system, manage access requests and maintain continuous compliance.</p>
-          </div>
-          <div class="phase-grid">
-            <div><h3>Key activities</h3><ul>
-              <li>Operate a hypercare queue for access issues; triage, trace, resolve and document recurring defects.</li>
-              <li>Process joiner/mover/leaver and role-change requests through approved workflows and owner approvals.</li>
-              <li>Review SoD conflicts, emergency access logs, privileged and technical accounts, and role changes.</li>
-              <li>Run periodic user access reviews; remove stale access and track remediation to closure.</li>
-              <li>Manage releases, role redesign and transports with regression tests, evidence retention and control monitoring.</li>
-            </ul></div>
-            <div class="deliverable"><h3>Operate with</h3><p>Service-level targets and ownership, access-request procedures, recurring risk and UAR schedule, audit-ready evidence, metrics dashboard and continuous-improvement backlog.</p></div>
-          </div>
-          <div class="callout"><strong>Say it simply:</strong> In Run I keep access correct through tickets, periodic reviews and SoD monitoring, and hand over full documentation so support can continue without the project team.</div>
-          <div class="related-links"><span>Reference:</span> <a href="uar.html">User Access Review</a><a href="grc.html">GRC risk analysis</a><a href="brfplus.html">BRF+ / MSMP reference</a></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="panel guardrails" id="interview" aria-labelledby="interview-title">
-      <div><span class="kicker">Interview ready</span><h2 id="interview-title">60-second answer</h2></div>
-      <div class="guardrail-grid">
-        <p><strong>The answer</strong><span>In a greenfield S/4HANA project I follow SAP Activate. In Prepare I understand the scope. In Explore I create the authorization matrix and SoD rules with business owners. In Realize I build and test roles, set up Fiori catalogs, run SoD analysis and transport roles to QAS. In Deploy I move roles to production, create users and set up firefighter access. In Run I handle tickets and access reviews.</span></p>
-        <p><strong>One-line version</strong><span>Understand scope, design the matrix, build and test roles, deploy users and access, then support and audit.</span></p>
-      </div>
-    </section>
-
-    <section class="panel guardrails" aria-labelledby="qa-title">
-      <div><span class="kicker">Common questions</span><h2 id="qa-title">Short answers to practise</h2></div>
-      <div class="guardrail-grid">
-        <p><strong>What is your daily routine?</strong><span>Use your real work: role changes, user administration, authorization issues with SU53 and ST01, GRC workflow requests, SoD mitigation and audit requests. Give one real example.</span></p>
-        <p><strong>A tester reports a missing authorization. What do you do?</strong><span>Check SU53 or STAUTHTRACE, find the missing object and values, fix the role in DEV, transport it, then retest.</span></p>
-        <p><strong>How do you avoid SoD conflicts in role design?</strong><span>Keep risky functions in separate roles, run ARA simulation before assigning, and use mitigating controls only when a conflict cannot be avoided.</span></p>
-        <p><strong>Why do roles go before users in cutover?</strong><span>Users without roles cannot work, and creating users first causes access errors and rework.</span></p>
-        <p><strong>ASAP or Activate?</strong><span>ASAP was used for ECC projects. Activate is used for S/4HANA and has the Prepare, Explore, Realize, Deploy and Run phases.</span></p>
-        <p><strong>What is Fiori security in two parts?</strong><span>The front end decides which tile the user sees (catalogs, groups, spaces and pages). The back end decides what the user can do (PFCG authorizations and OData service authorization).</span></p>
-      </div>
-    </section>
-
-    <section class="panel guardrails" aria-labelledby="guardrails-title">
-      <div><span class="kicker">Across every phase</span><h2 id="guardrails-title">Security delivery guardrails</h2></div>
-      <div class="guardrail-grid">
-        <p><strong>Least privilege</strong><span>Design access around job tasks, not convenience or copied legacy roles.</span></p>
-        <p><strong>Traceability</strong><span>Link requirements, role decisions, approvals, tests and transports.</span></p>
-        <p><strong>Segregation of duties</strong><span>Identify conflicts early; remediate or document approved mitigations.</span></p>
-        <p><strong>Controlled change</strong><span>Separate development, approval and production access wherever practical.</span></p>
-      </div>
-    </section>
-  </main>
-
-  <footer>SAP S/4HANA Greenfield Security · SAP Activate lifecycle reference</footer>
+  <div class="foot">Greenfield = fresh start, so security is designed in, not patched on.</div>
 </div>
-<script src="js/nav-mobile.js"></script>
+
+<script>
+const P=[
+{n:"Discover & Prepare",d:"3–6 Months",c:"#2e9e4f",
+ do:["Join fit-to-standard workshops to understand business processes","Define security strategy and authorization concept","Agree naming conventions and role design approach (single vs composite, business roles)","Baseline compliance needs: SOX, internal audit, data privacy","Plan GRC scope: ARA, ARM, EAM, BRM","Plan identity and SSO approach"],
+ out:["Security concept / blueprint document","Role design methodology and naming standard","SoD ruleset baseline","Security workstream plan and RACI"],
+ say:"In this phase I make sure security is part of the design from day one. I join the process workshops, document the authorization concept, and agree the role strategy and SoD ruleset before anything is built.",
+ tags:["Blueprint","SoD ruleset","SOX"]},
+{n:"Design & Build",d:"4–8 Months",c:"#1f7ae0",
+ do:["Build backend roles in PFCG and maintain SU24 proposals","Design Fiori catalogs, groups, spaces and pages","Activate and secure OData services (/IWFND, /IWBEP)","Run GRC ARA risk analysis on designed roles before release","Configure GRC workflows (ARM) and Firefighter (EAM) setup","Set basic security parameters, SNC / SSO, table logging"],
+ out:["Role matrix and role-to-process mapping","Fiori role / catalog mapping","GRC configuration and workflows","Dev and config access control rules"],
+ say:"I build the roles to least-privilege, keep the Fiori catalog and backend authorizations aligned, and run SoD simulation in GRC at design time, so conflicts are fixed before testing instead of after go-live.",
+ tags:["PFCG","SU24","Fiori","GRC ARA"]},
+{n:"Test & Deploy",d:"2–3 Months",c:"#7a3fc0",
+ do:["Support UAT and integration tests with role-based test users","Troubleshoot missing authorizations using SU53, ST01 and STAUTHTRACE","Positive and negative testing of roles","Remediate SoD violations or assign mitigating controls","Get role owner and business sign-off","Transport and validate roles through the landscape"],
+ out:["Role test evidence","SoD remediation / mitigation report","Signed-off role-to-user mapping","Updated roles after defects"],
+ say:"During UAT I handle authorization defects fast with SU53 and traces, and I keep a clean record of every role change, because auditors will ask for that evidence later.",
+ tags:["SU53","ST01","STAUTHTRACE","UAT"]},
+{n:"Go-Live & Transition",d:"1–1.5 Months",c:"#ee7a14",
+ do:["Cutover: mass user creation and role assignment","Import final roles to production","Remove or lock SAP_ALL and developer access in production","Activate Firefighter IDs and emergency access process","Validate critical access and key users before opening the system","Run go-live access readiness checklist"],
+ out:["Production user and role load","Firefighter and controller setup","Go-live access readiness sign-off"],
+ say:"At cutover my focus is a controlled production: only the right users with the right roles, no broad access, and emergency access available but monitored.",
+ tags:["Cutover","Firefighter","SAP_ALL"]},
+{n:"Hypercare & Optimize",d:"1–2 Months",c:"#d9a000",
+ do:["Triage Day-1 access issues and tune roles","Fix missing or excess authorizations through proper approval workflow","Run first user access review and SoD review","Monitor mitigation controls and firefighter usage","Clean up unused roles and authorizations","Support internal and external audit"],
+ out:["Hypercare issue log and fixes","First UAR and SoD review results","Audit evidence pack","Role optimization backlog"],
+ say:"After go-live I stabilize access, close issues through the GRC workflow rather than quick fixes, and then move to periodic reviews and role optimization so the clean design stays clean.",
+ tags:["UAR","Hypercare","Audit"]}
+];
+const Q=[
+["What is the biggest security difference in Greenfield?","You are not carrying legacy roles or SoD debt. You redesign roles, align them with Fiori apps, and bake compliance in from the start. The trade-off is more design and testing effort."],
+["How do you avoid SoD problems before go-live?","Run GRC ARA risk analysis on roles at design time, fix conflicts in the role, and only use mitigating controls where the business truly needs the combination. Re-check during UAT and before cutover."],
+["How do you handle Fiori authorizations?","Backend roles (PFCG, SU24) must match the frontend catalogs and groups, and the OData services must be active and authorized. Missing pieces usually show up in SU53 or the Gateway error log."],
+["How do you troubleshoot an authorization error?","Ask the user to run SU53 right after the error, check ST01 or STAUTHTRACE if needed, find the missing object and values, fix the role via the proper request, test, and transport."],
+["What was your role in the project?","Use your own real example: roles you designed, GRC workflows you configured, SoD issues you remediated, and the audit or SOX outcomes you supported."]
+];
+const ph=document.getElementById("phases"),bar=document.getElementById("bar"),panel=document.getElementById("panel");
+P.forEach((p,i)=>{
+ const b=document.createElement("button");b.className="ph";b.style.background=p.c;
+ b.innerHTML="<b>"+p.n+"</b><span>"+p.d+"</span>";
+ b.onclick=()=>show(i);ph.appendChild(b);
+ const s=document.createElement("i");s.style.background=p.c;s.style.flex=[4.5,6,2.5,1.25,1.5][i];bar.appendChild(s);
+});
+function li(a){return a.map(x=>"<li>"+x+"</li>").join("")}
+function show(i){
+ const p=P[i];
+ [...ph.children].forEach((b,j)=>b.classList.toggle("on",j===i));
+ panel.style.setProperty("--c",p.c);
+ panel.innerHTML="<h3>"+(i+1)+". "+p.n+"</h3><div class=\"sub\">Typical duration: "+p.d+" · Security workstream</div>"
+ +"<div class=\"cols\"><div><h4>What security does</h4><ul>"+li(p.do)+"</ul></div><div><h4>Deliverables</h4><ul>"+li(p.out)+"</ul></div></div>"
+ +"<div class=\"tools\">"+p.tags.map(t=>"<span class=\"tag\">"+t+"</span>").join("")+"</div>"
+ +"<div class=\"say\"><small>How to say it in the interview</small>“"+p.say+"”</div>";
+}
+show(0);
+document.getElementById("pitch").innerHTML=
+"“I have <mark>5.5 years</mark> of experience in SAP Security and GRC across <mark>ECC and S/4HANA</mark>. In a Greenfield implementation, security is part of every phase. In <b>Discover and Prepare</b> I help define the authorization concept and SoD baseline. In <b>Design and Build</b> I build least-privilege backend and Fiori roles and run GRC risk analysis early. In <b>Test and Deploy</b> I support UAT, fix authorization issues with SU53 and traces, and remediate SoD. At <b>Go-Live</b> I handle user and role cutover and emergency access. In <b>Hypercare</b> I stabilize access and support reviews and audit. On my project I worked on <mark>[your specific modules / roles / GRC workflows]</mark> and delivered <mark>[your result, e.g. zero critical SoD at go-live]</mark>.”";
+document.getElementById("copy").onclick=function(){
+ const t=document.getElementById("pitch").innerText;
+ const done=()=>{this.textContent="Copied";setTimeout(()=>this.textContent="Copy pitch",1500)};
+ try{navigator.clipboard.writeText(t).then(done,done)}catch(e){done()}
+};
+const qa=document.getElementById("qa");
+Q.forEach(q=>{const d=document.createElement("details");d.innerHTML="<summary>"+q[0]+"</summary><p>"+q[1]+"</p>";qa.appendChild(d)});
+document.getElementById("theme").onclick=()=>{
+ const r=document.documentElement,dark=getComputedStyle(r).getPropertyValue("--bg").trim()==="#10141d";
+ r.setAttribute("data-theme",dark?"light":"dark");
+};
+</script>
 </body>
 </html>
