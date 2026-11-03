@@ -29,52 +29,21 @@
   </header>
 
   <main>
-    <section class="intro panel" aria-labelledby="overview-title">
-      <div>
-        <span class="kicker">Implementation lifecycle</span>
-        <h2 id="overview-title">Security built in from day one</h2>
-        <p><strong>Greenfield</strong> means a brand new S/4HANA system built from scratch, so business processes, data and security are all designed fresh. <strong>SAP Activate</strong> runs the project in five phases (Prepare, Explore, Realize, Deploy, Run), and each phase ends with a Quality Gate. Security designs and builds the access: roles, users, Fiori apps and Segregation of Duties (SoD) controls.</p>
-      </div>
-      <aside class="scope">
-        <span class="scope-label">In scope</span>
-        <strong>SAP S/4HANA</strong>
-        <span>Greenfield · Embedded Fiori</span>
-        <span>DEV → QAS → PRD</span>
-      </aside>
-    </section>
-
-    <nav class="phase-nav panel" aria-label="Jump to an SAP Activate phase">
-      <span class="phase-nav-label">Jump to phase</span>
-      <a href="#prepare"><span>01</span> Prepare</a>
-      <a href="#explore"><span>02</span> Explore</a>
-      <a href="#realize"><span>03</span> Realize</a>
-      <a href="#deploy"><span>04</span> Deploy</a>
-      <a href="#run"><span>05</span> Run</a>
-      <a href="#interview"><span>Q&amp;A</span> Interview</a>
-    </nav>
-
-<button id="theme" aria-label="Toggle theme">Theme</button>
 <div class="wrap">
-  <div class="hero">
-    <h1>SAP S/4HANA Greenfield Implementation</h1>
-    <p>The Security &amp; GRC perspective – timeline at a glance</p>
-    <div class="chips"><span class="chip">Role design</span><span class="chip">Fiori security</span><span class="chip">GRC Access Control</span><span class="chip">SoD &amp; SOX</span></div>
-  </div>
-
-  <h2>1. Timeline – tap a phase</h2>
+  <h2 id="timeline">1. Timeline – tap a phase</h2>
   <p class="hint">Durations are typical ranges and vary by project size. Keyboard: Tab + Enter works too.</p>
   <div class="phases" id="phases"></div>
   <div class="bar" id="bar"></div>
   <div class="total">Total duration: 9–15 months</div>
   <div class="panel" id="panel" aria-live="polite"></div>
 
-  <h2>2. Your 60-second answer (edit the highlighted parts)</h2>
+  <h2 id="interview-pitch">2. Your 60-second answer (edit the highlighted parts)</h2>
   <div class="card">
     <div class="pitch" id="pitch" contenteditable="true" spellcheck="false"></div>
     <button class="act" id="copy">Copy pitch</button>
   </div>
 
-  <h2>3. Greenfield vs Brownfield – security view</h2>
+  <h2 id="comparison">3. Greenfield vs Brownfield – security view</h2>
   <div class="card scroll">
     <table>
       <tr><th>Area</th><th>Greenfield (new install)</th><th>Brownfield (system conversion)</th></tr>
@@ -155,10 +124,6 @@ document.getElementById("copy").onclick=function(){
 };
 const qa=document.getElementById("qa");
 Q.forEach(q=>{const d=document.createElement("details");d.innerHTML="<summary>"+q[0]+"</summary><p>"+q[1]+"</p>";qa.appendChild(d)});
-document.getElementById("theme").onclick=()=>{
- const r=document.documentElement,dark=getComputedStyle(r).getPropertyValue("--bg").trim()==="#10141d";
- r.setAttribute("data-theme",dark?"light":"dark");
-};
 </script>
 <script src="js/nav-mobile.js"></script>
 </body>
