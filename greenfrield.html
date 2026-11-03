@@ -8,7 +8,6 @@
 <meta name="theme-color" content="#0B1E33">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/greenfield.css">
-<link rel="stylesheet" href="css/nav-mobile.css">
 </head>
 <body>
 <div class="sheet">
@@ -54,64 +53,6 @@
       <a href="#interview"><span>Q&amp;A</span> Interview</a>
     </nav>
 
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SAP S/4HANA Greenfield – Security Perspective</title>
-<style>
-:root{--bg:#f3f5f9;--card:#fff;--text:#1a2233;--mute:#5b6478;--line:#dde2ec;--blue:#1f5fd0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141d;--card:#1a2030;--text:#e8ecf5;--mute:#9aa4ba;--line:#2a3247;--blue:#6aa0ff}}
-:root[data-theme="dark"]{--bg:#10141d;--card:#1a2030;--text:#e8ecf5;--mute:#9aa4ba;--line:#2a3247;--blue:#6aa0ff}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:1040px;margin:0 auto;padding:18px 14px 40px}
-.hero{background:linear-gradient(135deg,#1f5fd0,#4b2fa8);color:#fff;border-radius:16px;padding:22px 20px;text-align:center}
-.hero h1{margin:0 0 4px;font-size:clamp(20px,4.5vw,30px)}
-.hero p{margin:0;opacity:.92}
-.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-.chip{background:rgba(255,255,255,.18);border-radius:99px;padding:3px 12px;font-size:13px}
-h2{font-size:18px;margin:26px 0 10px}
-.hint{color:var(--mute);font-size:13px;margin:0 0 10px}
-.phases{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.ph{border:0;color:#fff;border-radius:12px;padding:12px 8px;cursor:pointer;text-align:center;font:inherit;transition:transform .15s,box-shadow .15s;opacity:.78}
-.ph b{display:block;font-size:14px}
-.ph span{display:block;font-size:12px;margin-top:4px;background:rgba(255,255,255,.22);border-radius:6px;padding:2px 0}
-.ph.on{opacity:1;transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.25)}
-.ph:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.bar{display:flex;height:10px;border-radius:99px;overflow:hidden;margin:14px 0 6px}
-.bar i{display:block;height:100%}
-.total{text-align:center;font-weight:700;color:var(--blue)}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:12px;border-top:5px solid var(--c,var(--blue))}
-.panel h3{margin:0 0 2px;font-size:18px}
-.panel .sub{color:var(--mute);font-size:13px;margin-bottom:10px}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.cols h4{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)}
-ul{margin:0;padding-left:18px}
-li{margin:3px 0}
-.say{margin-top:12px;background:rgba(31,95,208,.09);border-left:4px solid var(--blue);padding:10px 12px;border-radius:8px;font-style:italic}
-.say small{display:block;font-style:normal;font-weight:700;color:var(--blue);margin-bottom:2px}
-.tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.tag{font-size:12px;border:1px solid var(--line);border-radius:6px;padding:1px 8px;color:var(--mute)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-.pitch{white-space:pre-wrap;outline:none}
-.pitch mark{background:rgba(255,190,0,.3);color:inherit;border-radius:4px;padding:0 3px}
-button.act{font:inherit;background:var(--blue);color:#fff;border:0;border-radius:8px;padding:6px 14px;cursor:pointer;margin-top:10px}
-.scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
-th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
-th{background:rgba(31,95,208,.1)}
-details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
-summary{cursor:pointer;font-weight:600}
-details p{margin:8px 0 0;color:var(--mute)}
-.foot{margin-top:18px;text-align:center;font-weight:700;color:var(--blue);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
-#theme{position:absolute;right:14px;top:calc(10px + env(safe-area-inset-top,0px));font:inherit;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:3px 10px;cursor:pointer}
-@media(max-width:760px){.phases{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
 <button id="theme" aria-label="Toggle theme">Theme</button>
 <div class="wrap">
   <div class="hero">
@@ -150,6 +91,7 @@ details p{margin:8px 0 0;color:var(--mute)}
 
   <div class="foot">Greenfield = fresh start, so security is designed in, not patched on.</div>
 </div>
+</main>
 
 <script>
 const P=[
@@ -218,5 +160,6 @@ document.getElementById("theme").onclick=()=>{
  r.setAttribute("data-theme",dark?"light":"dark");
 };
 </script>
+<script src="js/nav-mobile.js"></script>
 </body>
 </html>
